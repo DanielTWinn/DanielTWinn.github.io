@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!-- Copyright Daniel Winn 2023 | MIT License -->
+<html>
+    <head>
+        <title>AIDetecter-AI</title>
+        <style>
+            h1,h2,h3,p,textarea {
+                text-align: center;
+                font-family: sans-serif;
+            }
+            textarea, button, div {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                resize: none;
+            }
+            table {
+              font-family: arial, sans-serif;
+              border-collapse: collapse;
+              width: 80%;
+              margin-left: auto;
+              margin-right: auto;
+            }
+            td, th {
+              border: 1px solid #dddddd;
+              text-align: center;
+              padding: 8px;
+            }
+            tr:nth-child(even) {
+              background-color: #dddddd;
+            }
+        </style>
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.19.0/dist/tf.min.js"></script>
+    </head>
+    <body>
+        <p style="font-weight: 700;color: white;background-color: black;border-color: gray;border-radius: 5px;margin-top: 0px; padding: 15px;">Email AIDectecterAI@pm.me for more infomation / to tryout models</p>
+        <div style="width: 80%;">
+        <h1 style="text-align: left; font-weight: 900;">AIDetecter-AI <span style="color: red;">DEMO</span></h1>
+        <p style="text-align: left; font-weight: 800;">Version: AIDetecterText0.3MiniJS</p>
+        <br>
+        <p style="font-weight: bold;">Text Input:</p>
+        <textarea id="input" placeholder="Text here" rows="10" cols="120" style="width: 98%;"></textarea>
+        <button onclick="RunModel()">Run Model</button>
+        <br>
+        <hr>
+        <p style="font-weight: bold;">Output: <span id="persent">------</span></p>
+        <p style="overflow-y: scroll; max-width: 98%; max-height: 205px;" id="output"></p>
+        <br>
+        <hr>
+        <h2>Demo not good? <b><u>We Know</u></b></h2>
+        <p>The Demo above is limited by the browser because it is ran off your browser, and because I don't want to put a 54.8M parameter model in a browser. It doesn't go well, as well as it is still in development.</p>
+        <h3>Model Table:</h3>
+        <table>
+            <tr>
+                <th>Model Name</th>
+                <th>Model Infomation</th>
+            </tr>
+            <tr>
+                <td>Text0.1</th>
+                <td>200 Data Points, 1000 Generations, 2.9M params, 350 Characters Input</th>
+            </tr>
+            <tr>
+                <td>Text0.2</th>
+                <td>500 Data Points, 300 Generations, 6.7M params, 400 Characters Input</th>
+            </tr>
+            <tr>
+                <td>Text0.25</th>
+                <td>1000 Data Points, 500 Generations, 45.6M params, 400 Characters Input</th>
+            </tr>
+            <tr>
+                <td>Text0.3</th>
+                <td>2500 Data Points, 500 Generations, 54.8M params, 500 Characters Input</th>
+            </tr>
+            <tr>
+                <td>Text0.3Mini</th>
+                <td>2500 Data Points, 500 Generations, 8M params, 500 Characters Input</th>
+            </tr>
+        </table>
+        <h2>Want to try the big ones? <b><u>It's free!</u></b></h2>
+        <p>If you want to try out the bigger models, like Text0.3, or maybe even multiple, Email <a href="mailto:AIDectecterAI@pm.me">AIDectecterAI@pm.me</a> with the model(s), along with the text you want to test, and the results will be sent back soon!</p>
+        <p><i>( Please note that this is not a product, but a soon-to-be open source project, I do not collect or log any infomation though this site or email)</i></p>
+        <br>
+        <br>
+        <hr>
+        <p> &copy; Daniel Winn 2023 | <a href="https://mit-license.org/">MIT License</a> | Hosted by <a href="http://github.io">GitHub.io</a></p>
+        </div>
+        <script>
+            // Copyright Daniel Winn 2023 | MIT License //
+            function SplitString(str) {
+              const noutf8 = str.replace(/[^\x00-\x7F]/g, "");
+              const regex = /([.!?]+(?=\s))/g;
+              const noNewlines = noutf8.replace(/\n/g, ' ');
+              const noBrackets = noNewlines.replace(/\[.*?\]/g, '');
+              const result = noBrackets.replace(regex, '$1|').split('|').map(s => s.trim());
+              const filteredResult = result.filter(s => s !== '');
+              return filteredResult;
+            }
+            function calculatePercent(output) {
+              let t = 0;
+              for (let i = 0; i < output.length; i++) {
+                if (output[i][0] > output[i][1]) {
+                  t++;
+                }
+              }
+              let toreturn = '-1';
+              if (t/output.length !== 1) {
+                let rawper = (t/output.length * 100).toFixed(2);
+                console.log('per: '+rawper);
+                toreturn = rawper
+              } else {
+                toreturn = 100;
+              }
+              return toreturn;
+            }
+            function preprocess_input_string(input_str) {
+              const input_vec = new Array(500).fill(0);
+              const maxchar = 100;
+              for (let i = 0; i < input_str.length; i++) {
+                if (i >= maxchar) {
+                  break;
+                }
+                const charCode = input_str.toLowerCase().charCodeAt(i) - ' '.charCodeAt(0);
+                input_vec[charCode] = 1;
+              }
+              return input_vec;
+            }
+            async function ProssesModel(string) {
+                const model = await tf.loadLayersModel('https://danieltwinn.github.io/aidetecterai/model/model.json');
+                data = tf.tensor([preprocess_input_string(string)])
+                output = model.predict(data)
+                return output.dataSync()
+            }
+            function cp(t, l) {
+              let toreturn = '-1';
+              if (t/l !== 1) {
+                toreturn = (t/l * 100).toFixed(2);
+              } else {
+                toreturn = 100;
+              }
+              return toreturn;
+            }
+            function RunModel() {
+                strings = SplitString(document.getElementById('input').value);
+                document.getElementById('output').innerText = '';
+                document.getElementById('persent').innerText = '';
+                returneddata = []
+                var Delay = 0
+                for (let i = 0; i < strings.length; i++) {
+                    setTimeout(function() {
+                        var string = strings[i]
+                        blank = ProssesModel(string).then((value) =>
+                        {
+                            data = value
+                            console.log(data)
+                            returneddata = returneddata.concat([[data[0], data[1]]])
+                            const text = document.createElement("span");
+                            text.innerText = string+' ';
+                            if (parseFloat(data[0]) > parseFloat(data[1])) {
+                                text.style.color = "red"
+                            } else {
+                                text.style.color = "green"
+                            }
+                            if (parseFloat(data[2]) > 0.5) {
+                                text.style.backgroundColor = "yellow"
+                            }
+                            text.addEventListener("click", function(e) {
+                                UpdateSel(i)
+                            }, false);
+                            document.getElementById('output').appendChild(text);
+                            document.getElementById('persent').innerText = cp(i+1, strings.length)+'% Loaded'
+                            document.getElementById('persent').style.color = 'black'  
+                        })
+                    }, Delay);
+                    Delay = Delay +800
+                }
+                setTimeout(function() {
+                    console.log(returneddata)
+                    per = calculatePercent(returneddata);
+                    console.log(per)
+                    document.getElementById('persent').innerText = per+'% AI'
+                    if (per >= 50) {
+                        document.getElementById('persent').style.color = 'red'
+                    } else {
+                        document.getElementById('persent').style.color = 'green'
+                    }
+                }, 1500*strings.length)
+            }
+        </script>
+    </body>
+    <!-- Copyright Daniel Winn 2023 | MIT License -->
+</html>
