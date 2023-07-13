@@ -1,10 +1,518 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Loading</title>
+        <script>console.log('Copyright Daniel Winn 2023, MIT License :D')</script>
+        <title>Daniel Winn</title>
+        <style>
+            body {
+                background-color: rgb(5, 10, 15);
+            }
+            #prepopup {
+                text-align: center;
+                font-family: sans-serif;
+                color: white;
+                background-color: rgb(10,15,20);
+                z-index: 100;
+                margin: 5% auto;
+                padding: 5px 5px 5px;
+                border: 5px solid rgb(8, 12, 18);
+                width: 300px;
+                opacity: 1;
+            }
+            #bar {
+                z-index: 20;
+                text-align: center;
+                font-family: monospace;
+                color: white;
+                width: 98%;
+                opacity: 1;
+                margin: 0px auto;
+                position: absolute;
+                bottom: 0px;
+                padding: 0px 0px 25px;
+                box-shadow: 0px 0px 20px 40px rgb(5, 10, 15);
+                background-color: rgb(5, 10, 15);
+            }
+            #bar button {
+                font-family: monospace;
+                color: white;
+                border: none;
+            }
+            #prepopup button {
+                font-weight: 600;
+                background-color: rgb(200, 200, 200)
+            }
+            .VoidBox {
+                border: 2px solid rgb(5, 5, 5);
+                background-color: rgb(4, 4, 4);
+                position: fixed;
+                z-index: 13;
+            }
+            #copyright {
+                display: inline;
+                margin: auto;
+                padding: 20px;
+            }
+            #bible {
+                position: fixed;
+                display: inline;
+                opacity: 0;
+                bottom: 0;
+                color: rgb(140,140,140);
+                z-index: 25;
+                text-align: center;
+                font-family: monospace;
+                left: 50%;
+                transform: translate(-50%, 0);
+            }
+            #about {
+                text-align: center;
+                background-color: rgb(25, 75, 130);
+                border: 5px solid rgb(20, 60, 110);
+                position: fixed;
+                z-index: 15;
+                top: 45%;
+                left: 50%;
+                transform: translate(-50%, -55%);
+                width: 350px;
+                font-family: monospace;
+                color: rgb(210, 210, 210);
+                opacity: 0;
+            }
+            #contact {
+                text-align: center;
+                background-color: rgb(5, 150, 50);
+                border: 5px solid rgb(5, 120, 65);
+                position: fixed;
+                z-index: 15;
+                top: 45%;
+                left: 50%;
+                transform: translate(-50%, -55%);
+                width: 350px;
+                font-family: monospace;
+                color: rgb(210, 210, 210);
+                opacity: 0;
+            }
+        </style>
+        <meta name="viewport" content="initial-scale=1">
     </head>
     <body>
-        <a herf="https://danieltwinn.github.io/aidetecterai">Click Here</a>
-        <script>document.location = 'https://danieltwinn.github.io/aidetecterai'</script>
+        <div id="prepopup">
+            <p style="font-weight: 700;">Welcome to Daniel Winn's Website,</p>
+            <p>This website only works in full screen, to continue, press the button below.</p>
+            <p><u>You can leave by pressing F11 or the fullscreen key on your keyboard.</u></p>
+            <button onclick="openFullscreen(); begin();">Please</button>
+        </div>
+        <div id="bar">
+            <button id="m1" style="float: left; margin: 0px 5px 10px; opacity: 0; background-color: rgb(5, 10, 15); transform: rotate(2deg);">
+                Daniel<br>Winn
+            </button>
+            <button id="m2" style="float: left; display: inline; margin: auto; padding: 20px; opacity: 0; background-color: rgb(5, 10, 15);">
+                About Me
+            </button>
+            <button id="m3" style="float: left; display: inline; margin: auto; padding: 20px; opacity: 0; background-color: rgb(5, 10, 15);">
+                Contact
+            </button>
+            <div id="c1">
+                <h3 id="copyright" style="opacity: 0; float: left;">
+                    &#169; Daniel Winn 2023 | MIT LICENSE
+                </h3>
+            </div>
+            <button id="m4" style="float: right; display: inline; margin: auto; padding: 20px; opacity: 0; background-color: rgb(5, 10, 15);">
+                AIDetecter-AI
+            </button>
+            <div id="c2"></div>
+        </div>
+        <p id="bible"></p>
+        <div id="void"></div>
+        <div id="about">
+            <h1>About Daniel Winn</h1>
+            <h2 style="margin: 0px 0px 4px;">Full Stack Developer</h2>
+            <p style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(240, 101, 41);">HT</span><span style="color: rgb(227, 76, 38);">ML</span>, <span style="color: rgb(252, 216, 60);">Java</span><span style="color: rgb(212, 184, 48);">script</span>, <span style="color: rgb(255, 215, 66);">Py</span><span style="color: rgb(50, 113, 164);">thon</span>, and <span style="color: rgb(1, 0, 128);">Lu</span><span style="color: rgb(255, 255, 255);">a</span></p>
+            <h2>Certs</h2>
+            <p>[undefind]</p>
+        </div>
+        <div id="contact">
+            <h1>Contact Daniel Winn</h1>
+            <h2 style="margin: 0px 0px 4px; color: rgb(20, 180, 200);">Twitter</h2>
+            <p id="twitter" style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(87, 175, 223);">Daniel</span><span style="color: rgb(178, 213, 228);">Joyful</span></p>
+            <h2>Email</h2>
+            <p id="email"><span style="color: rgb(119, 203, 217);">DanielTWinn</span><span style="color: rgb(228, 222, 39);">@</span>proton.me</p>
+        </div>
+        <script>
+            var thedocument = document.documentElement
+            function openFullscreen() { //Source: https://www.w3schools.com/howto/howto_js_fullscreen.asp
+              if (thedocument.requestFullscreen) {
+                thedocument.requestFullscreen();
+              } else if (thedocument.webkitRequestFullscreen) { // Safari
+                thedocument.webkitRequestFullscreen();
+              } else if (thedocument.msRequestFullscreen) { // IE11
+                thedocument.msRequestFullscreen();
+              }
+            }
+            function TweenOpacity(element, d, t, pcd) { // Daniel Winn - element, destination, type, per cycle delay
+                setTimeout(function() {
+                    if (window.getComputedStyle(element).getPropertyValue("opacity") != d) {
+                        if (t == 0) {
+                            element.style.opacity = Number(window.getComputedStyle(element).getPropertyValue("opacity"))-0.01
+                            TweenOpacity(element, d, t, pcd)
+                        } else if (t == 1) {
+                            element.style.opacity = Number(window.getComputedStyle(element).getPropertyValue("opacity"))+0.01
+                            TweenOpacity(element, d, t, pcd)
+                        }
+                    }
+                }, pcd)
+            }
+            function TweenColor(element, r, g, b, t, pcd) { // Daniel Winn - element, r, g, b, type, per cycle delay
+                var rgb = ''
+                try {
+                    var color = String(window.getComputedStyle(element).getPropertyValue("background-color"))
+                } catch {
+                    return
+                }
+                var cr = Number(color.split('(')[1].split(')')[0].split(', ')[0])
+                var cg = Number(color.split('(')[1].split(')')[0].split(', ')[1])
+                var cb = Number(color.split('(')[1].split(')')[0].split(', ')[2])
+                if (t == 0) {
+                    if (r != cr) {
+                        cr -= 1
+                    }
+                    if (g != cg) {
+                        cg -= 1
+                    }
+                    if (b != cb) {
+                        cb -= 1
+                    }
+                } else if (t == 1) {
+                    if (r != cr) {
+                        cr += 1
+                    }
+                    if (g != cg) {
+                        cg += 1
+                    }
+                    if (b != cb) {
+                        cb += 1
+                    }
+                }
+                rgb = 'rgb('+cr+', '+cg+', '+cb+')'
+                if (color != rgb) {
+                    setTimeout(function() {
+                        try {
+                            element.style['background-color'] = rgb;
+                            TweenColor(element, r, g, b, t, pcd)
+                        } catch {
+                            return
+                        }
+                    }, pcd)
+                }
+            }
+            function TweenTextColor(element, r, g, b, t, pcd) { // Daniel Winn - element, r, g, b, type, per cycle delay
+                var rgb = ''
+                var color = String(window.getComputedStyle(element).getPropertyValue("color"))
+                var cr = Number(color.split('(')[1].split(')')[0].split(', ')[0])
+                var cg = Number(color.split('(')[1].split(')')[0].split(', ')[1])
+                var cb = Number(color.split('(')[1].split(')')[0].split(', ')[2])
+                if (t == 0) {
+                    if (r != cr) {
+                        cr -= 1
+                    }
+                    if (g != cg) {
+                        cg -= 1
+                    }
+                    if (b != cb) {
+                        cb -= 1
+                    }
+                } else if (t == 1) {
+                    if (r != cr) {
+                        cr += 1
+                    }
+                    if (g != cg) {
+                        cg += 1
+                    }
+                    if (b != cb) {
+                        cb += 1
+                    }
+                }
+                rgb = 'rgb('+cr+', '+cg+', '+cb+')'
+                if (color != rgb) {
+                    setTimeout(function() {
+                        element.style['color'] = rgb;
+                        TweenTextColor(element, r, g, b, t, pcd)
+                    }, pcd)
+                }
+            }
+            var began = false
+            function begin() {
+                TweenOpacity(document.getElementById('prepopup'), 0, 0, 10)
+                document.getElementById('prepopup').remove()
+                setTimeout(function() {
+                    TweenOpacity(document.getElementById('m1'), 1, 1, 12)
+                    setTimeout(function() {
+                        TweenOpacity(document.getElementById('m2'), 1, 1, 12)
+                        setTimeout(function() {
+                            TweenOpacity(document.getElementById('m3'), 1, 1, 12)
+                            setTimeout(function() {
+                                TweenOpacity(document.getElementById('m4'), 1, 1, 12)
+                                setTimeout(function() {
+                                    TweenOpacity(document.getElementById('copyright'), 1, 1, 12)
+                                    setTimeout(function() {
+                                        TweenTextColor(document.getElementById('copyright'), 120,  120, 120, 0, 10)
+                                        BibleLoop()
+                                        TweenOpacity(document.getElementById('bible'), 1, 1, 10)
+                                        TweenColor(document.body, 5, 5, 5, 0, 200)
+                                        setTimeout(function() {
+                                            began = true
+                                            TheVoid()
+                                        }, 1500)
+                                    }, 700)
+                                }, 700)
+                            }, 700)
+                        }, 700)
+                    }, 700)
+                }, 700)
+            }
+            var cooldown = false
+            function ChangePage(p) {
+                if (began == true && cooldown == false) {
+                    document.getElementById("m2").style.color =  'rgb(255, 255, 255)'
+                    document.getElementById("m3").style.color =  'rgb(255, 255, 255)'
+                    if (p == 0) {
+                        TweenOpacity(document.getElementById('about'), 0, 0, 8)
+                        TweenOpacity(document.getElementById('contact'), 0, 0, 8)
+                        vbc = 'rgb(4, 4, 4)';
+                        vc = 'rgb(5, 5, 5)';
+                        vtc = [25,25,25];
+                        document.getElementById("m1").style.color =  'rgb(230, 230, 0)'
+                        setTimeout(() => {
+                            document.getElementById("m1").style.color =  'rgb(255, 255, 255)'
+                        }, 1000);
+                    } else if (p == 1) {
+                        TweenOpacity(document.getElementById('contact'), 0, 0, 8)
+                        TweenOpacity(document.getElementById('about'), 1, 1, 20)
+                        vbc = 'rgb(4, 9, 14)';
+                        vc = 'rgb(5, 10, 15)';
+                        vtc = [20,25,30];
+                        document.getElementById("m2").style.color =  'rgb(230, 230, 0)'
+                    } else if (p == 2) {
+                        TweenOpacity(document.getElementById('about'), 0, 0, 8)
+                        TweenOpacity(document.getElementById('contact'), 1, 1, 20)
+                        vbc = 'rgb(4, 19, 14)';
+                        vc = 'rgb(5, 20, 15)';
+                        vtc = [60, 110, 70];
+                        document.getElementById("m3").style.color =  'rgb(230, 230, 0)'
+                    }
+                    cooldown = true
+                    setTimeout(() => {
+                        cooldown = false
+                    }, 4000);
+                }
+            }
+            document.getElementById("bible").onmouseover = function() {
+                document.getElementById("bible").style.color =  'rgb(230, 230, 0)'
+                setTimeout(function() {
+                    document.getElementById("bible").style.color =  'rgb(140, 140, 140)'
+                }, 5000)
+            }
+            document.getElementById("m1").onmouseover = function() { 
+                if (String(window.getComputedStyle(document.getElementById("m1")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
+                    document.getElementById("m1").style.color =  'rgb(180, 180, 80)'
+                }
+                setTimeout(() => {
+                    if (String(window.getComputedStyle(document.getElementById("m1")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
+                        document.getElementById("m1").style.color =  'rgb(255, 255, 255)'
+                    }
+                }, 1500);
+            }
+            document.getElementById("m1").addEventListener("click", (event) => {
+                ChangePage(0)
+            });
+            document.getElementById("m2").onmouseover = function() {
+                if (String(window.getComputedStyle(document.getElementById("m2")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
+                    document.getElementById("m2").style.color =  'rgb(180, 180, 80)'
+                }
+                setTimeout(() => {
+                    if (String(window.getComputedStyle(document.getElementById("m2")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
+                        document.getElementById("m2").style.color =  'rgb(255, 255, 255)'
+                    }
+                }, 1500);
+            }
+            document.getElementById("m2").addEventListener("click", (event) => {
+                ChangePage(1)
+            });
+            document.getElementById("m3").onmouseover = function() {
+                if (String(window.getComputedStyle(document.getElementById("m3")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
+                    document.getElementById("m3").style.color =  'rgb(180, 180, 80)'
+                }
+                setTimeout(() => {
+                    if (String(window.getComputedStyle(document.getElementById("m3")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
+                        document.getElementById("m3").style.color =  'rgb(255, 255, 255)'
+                    }
+                }, 1500);
+            }
+            document.getElementById("m3").addEventListener("click", (event) => {
+                ChangePage(2)
+            });
+            document.getElementById("m4").onmouseover = function() {
+                if (String(window.getComputedStyle(document.getElementById("m4")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
+                    document.getElementById("m4").style.color =  'rgb(180, 180, 80)'
+                }
+                setTimeout(() => {
+                    if (String(window.getComputedStyle(document.getElementById("m4")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
+                        document.getElementById("m4").style.color =  'rgb(255, 255, 255)'
+                    }
+                }, 1500);
+            }
+            document.getElementById("m4").addEventListener("click", (event) => {
+                window.open('https://danieltwinn.github.io/aidetecterai/')
+            });
+            voidon = true
+            n = 0
+            vbc = 'rgb(4, 4, 4)';
+            vc = 'rgb(5, 5, 5)';
+            vtc = [25,25,25];
+            function TheVoid() {
+                setTimeout(function() {
+                    if (voidon == false) {
+                        return
+                    }
+                    if (n < 120) {
+                        n++
+                        var em = document.createElement('div')
+                        em.classList.add('VoidBox')
+                        em.style.backgroundColor = vc
+                        em.style.borderColor = vbc
+                        if (window.innerWidth > 500 && window.innerHeight > 500) {
+                            em.style.width = '100px'
+                            em.style.height = '100px'
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-105))+'px'
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-105))+'px'
+                        } else {
+                            em.style.width = '50px'
+                            em.style.height = '50px'
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-55))+'px'
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-55))+'px'
+                        }
+                        em.style.transform = 'rotate('+String(Math.floor(Math.random() * 16)-8)+'deg)'
+                        document.getElementById('void').appendChild(em)
+                        TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300)
+                        TheVoid()
+                    } else {
+                        setTimeout(function() {
+                            TweenOpacity(document.getElementById('void'), 0, 0, 10)
+                            setTimeout(function() {
+                                document.getElementById('void').innerHTML = ''
+                                document.getElementById('void').style.opacity = 1
+                                n = 0
+                                TheVoid()
+                            }, 2000)
+                        }, 2500)
+                    }
+                }, 80)
+            }
+            BibleList = [ // NIV Translation, https://www.zondervan.com, Biblica, Inc.™
+                'They replied, “Believe in the Lord Jesus, and you will be saved—you and your household. Acts 16:31 NIV',
+                'Therefore I tell you, whatever you ask for in prayer, believe that you have received it, and it will be yours. Mark 11:24 NIV',
+                'Therefore, my dear brothers and sisters, stand firm. Let nothing move you. Always give yourselves fully to the work of the Lord, because you know that your labor in the Lord is not in vain. 1 Corinthians 15:58 NIV',
+                'Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go. Joshua 1:9 NIV',
+                'I have told you these things, so that in me you may have peace. In this world you will have trouble. But take heart! I have overcome the world. John 16:33 NIV',
+                'Jesus looked at them and said, “With man this is impossible, but not with God; all things are possible with God.” Mark 10:27 NIV'
+            ]   
+            BibleVer = BibleList[Math.floor(Math.random()*BibleList.length)];
+            var bc = 0
+            var w1 = 0
+            var w2 = 0
+            maxbc = 70
+            function BibleLoop() { //Daniel Winn
+                setTimeout(function() {
+                    if (bc+maxbc >= BibleVer.length) {
+                        w2++
+                    } else {
+                        if (bc == 0) {
+                            var b = ''
+                            for (let i = 0; i < maxbc; i++) {
+                                b = b+BibleVer[bc+i]
+                            }
+                            document.getElementById('bible').innerHTML = b
+                            bc++
+                        } else if (w1 < 30) {
+                            w1++
+                        }else if (w1 >= 30) {
+                            var b = ''
+                            for (let i = 0; i <= maxbc; i++) {
+                                b = b+BibleVer[bc+i]
+                            }
+                            document.getElementById('bible').innerHTML = b
+                            bc++
+                        }
+                    }
+                    if (w2 >= 30) {
+                        w1 = 0
+                        w2 = 0
+                        bc = 0
+                    }
+                    BibleLoop()
+                }, 100)
+            }
+            addEventListener("resize", (event) => {
+                maxbc = Math.floor((window.innerWidth/3)/8)
+                if (window.innerWidth > 710) {
+                    document.getElementById('m1').style.fontSize = '25px' 
+                    document.getElementById('m2').style.fontSize = '16px'
+                    document.getElementById('m3').style.fontSize = '16px'
+                    document.getElementById('m4').style.fontSize = '16px'
+                    document.getElementById('m2').style.padding = '20px'
+                    document.getElementById('m3').style.padding = '20px'
+                    document.getElementById('m4').style.padding = '20px'
+                    if (!document.getElementById('c1').contains(document.getElementById('copyright'))) {
+                        var copyright = document.createElement('h3')
+                        try {
+                            copyright.style.opacity = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("opacity")
+                        } catch {
+                            copyright.style.opacity = 0
+                        }
+                        try {
+                            copyright.style.color = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("color")
+                        } catch {
+                            copyright.style.color = 'rgb(120,120,120)'
+                        }
+                        copyright.innerHTML = '&#169; Daniel Winn 2023 | MIT LISENSE'
+                        copyright.id = 'copyright'
+                        copyright.style.float = 'left'
+                        document.getElementById('c1').appendChild(copyright)
+                        document.getElementById('c2').innerHTML = ''
+                    }
+                    var fs = String((0.006*window.innerWidth)+3)
+                    if (fs <= 11) {
+                        document.getElementById('copyright').style.fontSize = 11+'px'
+                    } else if (fs >= 15) {
+                        document.getElementById('copyright').style.fontSize = 15+'px'
+                    } else {
+                        document.getElementById('copyright').style.fontSize = fs+'px'
+                    }
+                } else {
+                    document.getElementById('m1').style.fontSize = '20px' 
+                    document.getElementById('m2').style.fontSize = '12px'
+                    document.getElementById('m3').style.fontSize = '12px'
+                    document.getElementById('m4').style.fontSize = '12px'
+                    document.getElementById('m2').style.padding = '10px'
+                    document.getElementById('m3').style.padding = '10px'
+                    document.getElementById('m4').style.padding = '10px'
+                    if (!document.getElementById('c2').contains(document.getElementById('copyright'))) {
+                        var copyright = document.createElement('h3')
+                        copyright.style.opacity = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("opacity")
+                        copyright.style.color = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("color")
+                        copyright.style.fontSize = '12px'
+                        copyright.style.float = 'right'
+                        copyright.innerHTML = '&#169; Daniel Winn 2023 | MIT LISENSE'
+                        copyright.id = 'copyright'
+                        document.getElementById('c2').appendChild(copyright)
+                        document.getElementById('c1').innerHTML = ''
+                    }
+                }
+                if (!(!window.screenTop && !window.screenY)) {
+                    window.location.reload()
+                }
+            }); // Have a Blessed Day :)
+        </script>
     </body>
 </html>
