@@ -107,7 +107,7 @@
             <p style="font-weight: 700;">Welcome to Daniel Winn's Website,</p>
             <p>This website is better viewed in full screen, to continue, press the button below.</p>
             <p><u>You can leave by pressing F11 or the fullscreen key on your keyboard.</u></p>
-            <button onclick="openFullscreen(); begin();">Please</button>
+            <button onclick="openFullscreen(); begin();">Okay</button><button id="nt" style="border-color: rgb(130,130,130); background-color: rgb(150,150,150); margin-left: 20px;" onclick="begin();">No Thanks</button>
         </div>
         <div id="bar">
             <button id="m1" style="float: left; margin: 0px 5px 10px; opacity: 0; background-color: rgb(5, 10, 15); transform: rotate(2deg);">
@@ -515,9 +515,6 @@
                         document.getElementById('c1').innerHTML = ''
                     }
                 }
-                //if (!(!window.screenTop && !window.screenY)) { Breaks some browsers :(
-                //    window.location.reload()
-                //}
             }); // Have a Blessed Day :)
         </script>
     </body>
