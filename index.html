@@ -11,19 +11,6 @@
             body {
                 background-color: rgb(5, 10, 15);
             }
-            #prepopup {
-                text-align: center;
-                font-family: sans-serif;
-                color: white;
-                background-color: rgb(10,15,20);
-                z-index: 100;
-                margin: 5% auto;
-                padding: 5px 5px 5px;
-                border: 5px solid rgb(8, 12, 18);
-                width: 300px;
-                opacity: 1;
-                position: relative;
-            }
             #bar {
                 z-index: 20;
                 text-align: center;
@@ -99,16 +86,11 @@
                 opacity: 0;
             }
         </style>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="GOlM5DoHGrpNoaB3BcCThElXERGH3e6bOCxMO-gBJJQ" /> <!-- For Google -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self';" />
     </head>
     <body>
-        <div id="prepopup">
-            <p style="font-weight: 700;">Welcome to Daniel Winn's Website,</p>
-            <p>This website is better viewed in full screen, to continue, press the button below.</p>
-            <p><u>You can leave by pressing F11 or the fullscreen key on your keyboard.</u></p>
-            <button onclick="openFullscreen(); begin();">Okay</button><button id="nt" style="border-color: rgb(130,130,130); background-color: rgb(150,150,150); margin-left: 20px;" onclick="begin();">No Thanks</button>
-        </div>
         <div id="bar">
             <button id="m1" style="float: left; margin: 0px 5px 10px; opacity: 0; background-color: rgb(5, 10, 15); transform: rotate(2deg);">
                 Daniel<br>Winn
@@ -146,16 +128,6 @@
             <p id="email"><span style="color: rgb(119, 203, 217);">DanielTWinn</span><span style="color: rgb(228, 222, 39);">@</span>proton.me</p>
         </div>
         <script>
-            var thedocument = document.documentElement
-            function openFullscreen() { //Source: https://www.w3schools.com/howto/howto_js_fullscreen.asp
-              if (thedocument.requestFullscreen) {
-                thedocument.requestFullscreen();
-              } else if (thedocument.webkitRequestFullscreen) { // Safari
-                thedocument.webkitRequestFullscreen();
-              } else if (thedocument.msRequestFullscreen) { // IE11
-                thedocument.msRequestFullscreen();
-              }
-            }
             function TweenOpacity(element, d, t, pcd) { // Daniel Winn - element, destination, type, per cycle delay
                 setTimeout(function() {
                     if (window.getComputedStyle(element).getPropertyValue("opacity") != d) {
@@ -249,8 +221,6 @@
             }
             var began = false
             function begin() {
-                TweenOpacity(document.getElementById('prepopup'), 0, 0, 10)
-                document.getElementById('prepopup').remove()
                 setTimeout(function() {
                     TweenOpacity(document.getElementById('m1'), 1, 1, 12)
                     setTimeout(function() {
@@ -269,14 +239,15 @@
                                         setTimeout(function() {
                                             began = true
                                             TheVoid()
-                                        }, 1500)
-                                    }, 700)
-                                }, 700)
-                            }, 700)
-                        }, 700)
-                    }, 700)
-                }, 700)
+                                        }, 1300)
+                                    }, 300)
+                                }, 300)
+                            }, 300)
+                        }, 300)
+                    }, 300)
+                }, 500)
             }
+            begin()
             var cooldown = false
             function ChangePage(p) {
                 if (began == true && cooldown == false) {
@@ -459,7 +430,7 @@
                     BibleLoop()
                 }, 100)
             }
-            addEventListener("resize", (event) => {
+            function fixsize() {
                 maxbc = Math.floor((window.innerWidth/3)/8)
                 if (window.innerWidth > 710) {
                     document.getElementById('m1').style.fontSize = '25px' 
@@ -515,7 +486,10 @@
                         document.getElementById('c1').innerHTML = ''
                     }
                 }
-            }); // Have a Blessed Day :)
+            };
+            addEventListener("resize", (event) => {fixsize()})
+            fixsize()
+            // Have a Blessed Day :)
         </script>
     </body>
 </html>
