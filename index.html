@@ -15,6 +15,8 @@
                 width: 100%;
                 height: 20px;
                 background-image: url("https://danieltwinn.github.io/images/ChristmasLights.png");
+                position: relative;
+                z-index: 100;
             }
             #bar {
                 z-index: 20;
@@ -90,6 +92,23 @@
                 color: rgb(210, 210, 210);
                 opacity: 0;
             }
+            .altpage {
+                text-decoration: none;
+                position: relative;
+                font-weight: 700;
+                z-index: 16;
+                padding: 8px;
+            }
+            .about {
+                color: rgb(12, 40, 40);
+            }
+            .contact {
+                color: rgb(10, 40, 15);
+            }
+            a {
+                text-decoration: none;
+                color: white;
+            }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="GOlM5DoHGrpNoaB3BcCThElXERGH3e6bOCxMO-gBJJQ" /> <!-- For Google -->
@@ -126,13 +145,15 @@
             <p style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(240, 101, 41);">HT</span><span style="color: rgb(227, 76, 38);">ML</span>, <span style="color: rgb(252, 216, 60);">Java</span><span style="color: rgb(212, 184, 48);">script</span>, <span style="color: rgb(255, 215, 66);">Py</span><span style="color: rgb(50, 113, 164);">thon</span>, and <span style="color: rgb(1, 0, 128);">Lu</span><span style="color: rgb(255, 255, 255);">a</span></p>
             <h2>Certs</h2>
             <p>[undefind]</p>
+            <a class="altpage about" href="https://danieltwinn.github.io/about">Separate Page View</a>
         </div>
         <div id="contact">
             <h1>Contact Daniel Winn</h1>
             <h2 style="margin: 0px 0px 4px; color: rgb(20, 180, 200);">Twitter</h2>
-            <p id="twitter" style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(87, 175, 223);">Daniel</span><span style="color: rgb(178, 213, 228);">Joyful</span></p>
+            <a href="https://twitter.com/DanielJoyful"><p id="twitter" style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(87, 175, 223);">Daniel</span><span style="color: rgb(178, 213, 228);">Joyful</span></p></a>
             <h2>Email</h2>
-            <p id="email"><span style="color: rgb(119, 203, 217);">DanielTWinn</span><span style="color: rgb(228, 222, 39);">@</span>proton.me</p>
+            <a href="mailto:DanielTWinn@proton.me?body=:-)"><p id="email"><span style="color: rgb(119, 203, 217);">DanielTWinn</span><span style="color: rgb(228, 222, 39);">@</span>proton.me</p></a>
+            <a class="altpage contact" href="https://danieltwinn.github.io/contact">Separate Page View</a>
         </div>
         <script>
             function TweenOpacity(element, d, t, pcd) { // Daniel Winn - element, destination, type, per cycle delay
@@ -260,6 +281,8 @@
                 if (began == true && cooldown == false) {
                     document.getElementById("m2").style.color =  'rgb(255, 255, 255)'
                     document.getElementById("m3").style.color =  'rgb(255, 255, 255)'
+                    document.getElementById("about").style.zIndex = "15"
+                    document.getElementById("contact").style.zIndex = "15"
                     if (p == 0) {
                         TweenOpacity(document.getElementById('about'), 0, 0, 8)
                         TweenOpacity(document.getElementById('contact'), 0, 0, 8)
@@ -273,6 +296,7 @@
                     } else if (p == 1) {
                         TweenOpacity(document.getElementById('contact'), 0, 0, 8)
                         TweenOpacity(document.getElementById('about'), 1, 1, 20)
+                        document.getElementById("about").style.zIndex = "16"
                         vbc = 'rgb(4, 9, 14)';
                         vc = 'rgb(5, 10, 15)';
                         vtc = [20,25,30];
@@ -280,6 +304,7 @@
                     } else if (p == 2) {
                         TweenOpacity(document.getElementById('about'), 0, 0, 8)
                         TweenOpacity(document.getElementById('contact'), 1, 1, 20)
+                        document.getElementById("contact").style.zIndex = "16"
                         vbc = 'rgb(4, 19, 14)';
                         vc = 'rgb(5, 20, 15)';
                         vtc = [60, 110, 70];

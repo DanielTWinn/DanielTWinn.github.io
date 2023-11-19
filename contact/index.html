@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>console.log('Copyright Daniel Winn 2023, MIT License :D')</script>
+        <meta charset="UTF-8">
+        <meta name="description" content="Daniel Winn's (very nice) Contact Page">
+        <meta name="keywords" content="Daniel,Winn,Programmer,Coder,Full Stack,Developer,Joyful,DanielJoyful">
+        <meta name="author" content="Daniel T. Winn">
+        <title>Contact Daniel Winn</title>
+        <style>
+            body {
+                background-color: rgb(5, 10, 15);
+            }
+            #bar {
+                z-index: 20;
+                text-align: center;
+                font-family: monospace;
+                color: white;
+                width: 98%;
+                opacity: 1;
+                margin: 0px auto;
+                position: absolute;
+                bottom: 0px;
+                padding: 0px 0px 5px;
+                box-shadow: 0px 0px 20px 40px rgb(5, 10, 15);
+                background-color: rgb(5, 10, 15);
+                display: inline;
+            }
+            #bar button {
+                font-family: monospace;
+                color: white;
+                border: none;
+            }
+            .VoidBox {
+                border: 2px solid rgb(5, 5, 5);
+                background-color: rgb(4, 4, 4);
+                position: fixed;
+                z-index: 13;
+            }
+            #copyright {
+                display: inline;
+                margin: auto;
+                font-size: 13px;
+                margin: 1px 2px;
+            }
+            #page {
+                text-align: center;
+                background-color: rgba(5, 150, 50, 0.5);
+                border: 5px solid rgb(5, 120, 65);
+                position: fixed;
+                z-index: 15;
+                top: 49%;
+                left: 50%;
+                transform: translate(-50%, -55%);
+                width: 95%;
+                height: 85%;
+                font-family: monospace;
+                color: rgb(210, 210, 210);
+                opacity: 0;
+            }
+            .imageline img {
+                margin: 3px;
+                max-width: 50px;
+            }
+            a {
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <div id="christmas">
+
+        </div>
+        <div id="bar">
+            <button id="m1" style="float: left; margin: 0px 5px 0px; opacity: 0; background-color: rgb(5, 10, 15); font-size: 15px;">
+                Daniel Winn
+            </button>
+            <div id="c1">
+                <h3 id="copyright" style="opacity: 0; float: left;">
+                    &#169; Daniel Winn 2023 | MIT LICENSE
+                </h3>
+            </div>
+            <div id="c2"></div>
+        </div>
+        <div id="void"></div>
+        <div id="page">
+            <h1>Contact Daniel Winn</h1>
+            <h2 style="margin: 0px 0px 4px; color: rgb(20, 180, 200);">Twitter</h2>
+            <a href="https://twitter.com/DanielJoyful"><p id="twitter" style="font-weight: 800; margin: 0px 0px 5px;"><span style="color: rgb(87, 175, 223);">Daniel</span><span style="color: rgb(178, 213, 228);">Joyful</span></p></a>
+            <h2>Email</h2>
+            <a href="mailto:DanielTWinn@proton.me?body=:-)"><p id="email"><span style="color: rgb(119, 203, 217);">DanielTWinn</span><span style="color: rgb(228, 222, 39);">@</span>proton.me</p></a>
+        </div>
+        <script>
+            function TweenOpacity(element, d, t, pcd) { // Daniel Winn - element, destination, type, per cycle delay
+                setTimeout(function() {
+                    if (window.getComputedStyle(element).getPropertyValue("opacity") != d) {
+                        if (t == 0) {
+                            element.style.opacity = Number(window.getComputedStyle(element).getPropertyValue("opacity"))-0.01
+                            TweenOpacity(element, d, t, pcd)
+                        } else if (t == 1) {
+                            element.style.opacity = Number(window.getComputedStyle(element).getPropertyValue("opacity"))+0.01
+                            TweenOpacity(element, d, t, pcd)
+                        }
+                    }
+                }, pcd)
+            }
+            function TweenColor(element, r, g, b, t, pcd) { // Daniel Winn - element, r, g, b, type, per cycle delay
+                var rgb = ''
+                try {
+                    var color = String(window.getComputedStyle(element).getPropertyValue("background-color"))
+                } catch {
+                    return
+                }
+                var cr = Number(color.split('(')[1].split(')')[0].split(', ')[0])
+                var cg = Number(color.split('(')[1].split(')')[0].split(', ')[1])
+                var cb = Number(color.split('(')[1].split(')')[0].split(', ')[2])
+                if (t == 0) {
+                    if (r != cr) {
+                        cr -= 1
+                    }
+                    if (g != cg) {
+                        cg -= 1
+                    }
+                    if (b != cb) {
+                        cb -= 1
+                    }
+                } else if (t == 1) {
+                    if (r != cr) {
+                        cr += 1
+                    }
+                    if (g != cg) {
+                        cg += 1
+                    }
+                    if (b != cb) {
+                        cb += 1
+                    }
+                }
+                rgb = 'rgb('+cr+', '+cg+', '+cb+')'
+                if (color != rgb) {
+                    setTimeout(function() {
+                        try {
+                            element.style['background-color'] = rgb;
+                            TweenColor(element, r, g, b, t, pcd)
+                        } catch {
+                            return
+                        }
+                    }, pcd)
+                }
+            }
+            function TweenTextColor(element, r, g, b, t, pcd) { // Daniel Winn - element, r, g, b, type, per cycle delay
+                var rgb = ''
+                var color = String(window.getComputedStyle(element).getPropertyValue("color"))
+                var cr = Number(color.split('(')[1].split(')')[0].split(', ')[0])
+                var cg = Number(color.split('(')[1].split(')')[0].split(', ')[1])
+                var cb = Number(color.split('(')[1].split(')')[0].split(', ')[2])
+                if (t == 0) {
+                    if (r != cr) {
+                        cr -= 1
+                    }
+                    if (g != cg) {
+                        cg -= 1
+                    }
+                    if (b != cb) {
+                        cb -= 1
+                    }
+                } else if (t == 1) {
+                    if (r != cr) {
+                        cr += 1
+                    }
+                    if (g != cg) {
+                        cg += 1
+                    }
+                    if (b != cb) {
+                        cb += 1
+                    }
+                }
+                rgb = 'rgb('+cr+', '+cg+', '+cb+')'
+                if (color != rgb) {
+                    setTimeout(function() {
+                        element.style['color'] = rgb;
+                        TweenTextColor(element, r, g, b, t, pcd)
+                    }, pcd)
+                }
+            }
+            var began = false
+            function begin() {
+                setTimeout(function() {
+                    TweenOpacity(document.getElementById('m1'), 1, 1, 12)
+                    setTimeout(function() {
+                        TweenOpacity(document.getElementById('copyright'), 1, 1, 12)
+                        setTimeout(function() {
+                            TweenTextColor(document.getElementById('copyright'), 120,  120, 120, 0, 10)
+                            TweenColor(document.body, 5, 5, 5, 0, 200)
+                            setTimeout(function() {
+                                began = true
+                                TheVoid()
+                                LoadPage()
+                            }, 1300)
+                        }, 300)
+                    }, 300)
+                }, 500)
+            }
+            begin()
+            function LoadPage() {
+                TweenOpacity(document.getElementById('page'), 1, 1, 20)
+            }
+            document.getElementById("m1").addEventListener("click", (event) => {
+                document.location.href = "https://danieltwinn.github.io"
+            });
+            document.getElementById("m1").onmouseover = function() { 
+                if (String(window.getComputedStyle(document.getElementById("m1")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
+                    document.getElementById("m1").style.color =  'rgb(180, 180, 80)'
+                }
+                setTimeout(() => {
+                    if (String(window.getComputedStyle(document.getElementById("m1")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
+                        document.getElementById("m1").style.color =  'rgb(255, 255, 255)'
+                    }
+                }, 1500);
+            }
+            voidon = true
+            n = 0
+            vbc = 'rgb(4, 4, 4)';
+            vc = 'rgb(5, 5, 5)';
+            vtc = [25,25,25];
+            function TheVoid() {
+                setTimeout(function() {
+                    if (voidon == false) {
+                        return
+                    }
+                    if (n < 120) {
+                        n++
+                        var em = document.createElement('div')
+                        em.classList.add('VoidBox')
+                        em.style.backgroundColor = vc
+                        em.style.borderColor = vbc
+                        if (window.innerWidth > 500 && window.innerHeight > 500) {
+                            em.style.width = '100px'
+                            em.style.height = '100px'
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-105))+'px'
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-105))+'px'
+                        } else {
+                            em.style.width = '50px'
+                            em.style.height = '50px'
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-55))+'px'
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-55))+'px'
+                        }
+                        em.style.transform = 'rotate('+String(Math.floor(Math.random() * 16)-8)+'deg)'
+                        document.getElementById('void').appendChild(em)
+                        TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300)
+                        TheVoid()
+                    } else {
+                        setTimeout(function() {
+                            TweenOpacity(document.getElementById('void'), 0, 0, 10)
+                            setTimeout(function() {
+                                document.getElementById('void').innerHTML = ''
+                                document.getElementById('void').style.opacity = 1
+                                n = 0
+                                TheVoid()
+                            }, 2000)
+                        }, 2500)
+                    }
+                }, 80)
+            }
+            function fixsize() {
+                maxbc = Math.floor((window.innerWidth/3)/8)
+                if (window.innerWidth > 710) {
+                    document.getElementById('m1').style.fontSize = '15px' 
+                    if (!document.getElementById('c1').contains(document.getElementById('copyright'))) {
+                        var copyright = document.createElement('h3')
+                        try {
+                            copyright.style.opacity = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("opacity")
+                        } catch {
+                            copyright.style.opacity = 0
+                        }
+                        try {
+                            copyright.style.color = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("color")
+                        } catch {
+                            copyright.style.color = 'rgb(120,120,120)'
+                        }
+                        copyright.innerHTML = '&#169; Daniel Winn 2023 | MIT LISENSE'
+                        copyright.id = 'copyright'
+                        copyright.style.float = 'left'
+                        document.getElementById('c1').appendChild(copyright)
+                        document.getElementById('c2').innerHTML = ''
+                    }
+                } else {
+                    document.getElementById('m1').style.fontSize = '12px' 
+                    if (!document.getElementById('c2').contains(document.getElementById('copyright'))) {
+                        var copyright = document.createElement('h3')
+                        copyright.style.opacity = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("opacity")
+                        copyright.style.color = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("color")
+                        copyright.style.fontSize = '12px'
+                        copyright.style.float = 'right'
+                        copyright.innerHTML = '&#169; Daniel Winn 2023 | MIT LISENSE'
+                        copyright.id = 'copyright'
+                        document.getElementById('c2').appendChild(copyright)
+                        document.getElementById('c1').innerHTML = ''
+                    }
+                }
+            };
+            addEventListener("resize", (event) => {fixsize()})
+            fixsize()
+            // Have a Blessed Day :)
+        </script>
+    </body>
+</html>
