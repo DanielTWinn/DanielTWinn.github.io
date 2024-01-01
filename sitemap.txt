@@ -1,2 +1,4 @@
 https://danieltwinn.github.io/
+https://danieltwinn.github.io/about/
+https://danieltwinn.github.io/contact/
 https://danieltwinn.github.io/aidetecterai/
