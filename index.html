@@ -122,9 +122,6 @@
                     &#169; Daniel Winn 2024 | MIT LICENSE
                 </h3>
             </div>
-            <button id="m4" style="float: right; display: inline; margin: auto; padding: 20px; opacity: 0; background-color: rgb(5, 10, 15);">
-                AIDetecter-AI
-            </button>
             <div id="c2"></div>
         </div>
         <p id="bible"></p>
@@ -246,19 +243,16 @@
                         setTimeout(function() {
                             TweenOpacity(document.getElementById('m3'), 1, 1, 12)
                             setTimeout(function() {
-                                TweenOpacity(document.getElementById('m4'), 1, 1, 12)
+                                TweenOpacity(document.getElementById('copyright'), 1, 1, 12)
                                 setTimeout(function() {
-                                    TweenOpacity(document.getElementById('copyright'), 1, 1, 12)
+                                    TweenTextColor(document.getElementById('copyright'), 120,  120, 120, 0, 10)
+                                    BibleLoop()
+                                    TweenOpacity(document.getElementById('bible'), 1, 1, 10)
+                                    TweenColor(document.body, 5, 5, 5, 0, 200)
                                     setTimeout(function() {
-                                        TweenTextColor(document.getElementById('copyright'), 120,  120, 120, 0, 10)
-                                        BibleLoop()
-                                        TweenOpacity(document.getElementById('bible'), 1, 1, 10)
-                                        TweenColor(document.body, 5, 5, 5, 0, 200)
-                                        setTimeout(function() {
-                                            began = true
-                                            TheVoid()
-                                        }, 1300)
-                                    }, 300)
+                                        began = true
+                                        TheVoid()
+                                    }, 1300)
                                 }, 300)
                             }, 300)
                         }, 300)
@@ -350,19 +344,6 @@
             }
             document.getElementById("m3").addEventListener("click", (event) => {
                 ChangePage(2)
-            });
-            document.getElementById("m4").onmouseover = function() {
-                if (String(window.getComputedStyle(document.getElementById("m4")).getPropertyValue("color")) == 'rgb(255, 255, 255)') {
-                    document.getElementById("m4").style.color =  'rgb(180, 180, 80)'
-                }
-                setTimeout(() => {
-                    if (String(window.getComputedStyle(document.getElementById("m4")).getPropertyValue("color")) == 'rgb(180, 180, 80)') {
-                        document.getElementById("m4").style.color =  'rgb(255, 255, 255)'
-                    }
-                }, 1500);
-            }
-            document.getElementById("m4").addEventListener("click", (event) => {
-                window.open('https://danieltwinn.github.io/aidetecterai/')
             });
             voidon = true
             n = 0
@@ -458,10 +439,8 @@
                     document.getElementById('m1').style.fontSize = '25px' 
                     document.getElementById('m2').style.fontSize = '16px'
                     document.getElementById('m3').style.fontSize = '16px'
-                    document.getElementById('m4').style.fontSize = '16px'
                     document.getElementById('m2').style.padding = '20px'
                     document.getElementById('m3').style.padding = '20px'
-                    document.getElementById('m4').style.padding = '20px'
                     if (!document.getElementById('c1').contains(document.getElementById('copyright'))) {
                         var copyright = document.createElement('h3')
                         try {
@@ -492,10 +471,8 @@
                     document.getElementById('m1').style.fontSize = '20px' 
                     document.getElementById('m2').style.fontSize = '12px'
                     document.getElementById('m3').style.fontSize = '12px'
-                    document.getElementById('m4').style.fontSize = '12px'
                     document.getElementById('m2').style.padding = '10px'
                     document.getElementById('m3').style.padding = '10px'
-                    document.getElementById('m4').style.padding = '10px'
                     if (!document.getElementById('c2').contains(document.getElementById('copyright'))) {
                         var copyright = document.createElement('h3')
                         copyright.style.opacity = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("opacity")
