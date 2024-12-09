@@ -2,6 +2,13 @@
 <html>
     <head>
         <title>Showcase</title>
+        <style>
+            body {
+                background-size: cover;
+                background-position: center center;
+                background-attachment: fixed;
+            }
+        </style>
     </head>
     <body>
         <script>
@@ -59,7 +66,7 @@
                 document.body.style.backgroundImage = "https://danieltwinn.github.io/showcase/"+closestAspectRatio()+"/frame_"+padNumberWithZeros()+'.png';
                 setTimeout(() => {
                     loop()
-                }, i * 1000);
+                }, i * 200);
             }
             loop()
         </script>
