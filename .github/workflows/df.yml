@@ -1,0 +1,6 @@
+name: df
+run-name: df command
+on: [push]
+jobs:
+  steps:
+      - run: df -h
