@@ -1,11 +1,13 @@
-ame: df
+name: df
 run-name: df command
 on: [push]
 jobs:
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Install coreutils
-      run: sudo apt-get update && sudo apt-get install -y coreutils
-    - name: Run df command
-      run: df -h
+  df:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install coreutils
+        run: sudo apt-get update && sudo apt-get install -y coreutils
+      - name: Run df command
+        run: df -h
