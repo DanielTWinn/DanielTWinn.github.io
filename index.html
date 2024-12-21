@@ -356,25 +356,40 @@
                         return
                     }
                     if (n < 120) {
-                        n++
-                        var em = document.createElement('div')
-                        em.classList.add('VoidBox')
-                        em.style.backgroundColor = vc
-                        em.style.borderColor = vbc
-                        if (window.innerWidth > 500 && window.innerHeight > 500) {
-                            em.style.width = '100px'
-                            em.style.height = '100px'
-                            em.style.top = Math.floor(Math.random() * (window.innerHeight-105))+'px'
-                            em.style.left = Math.floor(Math.random() * (window.innerWidth-105))+'px'
+                        n++;
+                        var em = document.createElement('div');
+                        em.classList.add('VoidBox');
+                        em.style.backgroundColor = vc;
+                        bcn = 1
+                        if (Math.floor(Math.random()*2) == 1) {
+                            bcn = 1
+                            em.style.borderColor = "rgb(25, 100, 35)";//em.style.borderColor = vbc;
                         } else {
-                            em.style.width = '50px'
-                            em.style.height = '50px'
-                            em.style.top = Math.floor(Math.random() * (window.innerHeight-55))+'px'
-                            em.style.left = Math.floor(Math.random() * (window.innerWidth-55))+'px'
+                            bcn = 2
+                            em.style.borderColor = "rgb(100, 25, 25)";
                         }
-                        em.style.transform = 'rotate('+String(Math.floor(Math.random() * 16)-8)+'deg)'
-                        document.getElementById('void').appendChild(em)
-                        TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300)
+                        if (window.innerWidth > 500 && window.innerHeight > 500) {
+                            em.style.width = '100px';
+                            em.style.height = '100px';
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-105))+'px';
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-105))+'px';
+                        } else {
+                            em.style.width = '50px';
+                            em.style.height = '50px';
+                            em.style.top = Math.floor(Math.random() * (window.innerHeight-55))+'px';
+                            em.style.left = Math.floor(Math.random() * (window.innerWidth-55))+'px';
+                        }
+                        em.style.transform = 'rotate('+String(Math.floor(Math.random() * 16)-8)+'deg)';
+
+                        document.getElementById('void').appendChild(em);
+                        if (bcn == 1) {
+                            TweenColor(em, 100, 25, 25, 1, 80);
+                            em.style.backgroundImage = "url(https://danieltwinn.github.io/images/gifts/gift"+String(Math.floor(Math.random()*4)+1)+")";
+                        } else {
+                            TweenColor(em, 25, 100, 35, 1, 80);
+                            em.style.backgroundImage = "url(https://danieltwinn.github.io/images/gifts/gift"+String(Math.floor(Math.random()*4)+1)+")";
+                        }
+                        //TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300);
                         TheVoid()
                     } else {
                         setTimeout(function() {
@@ -488,7 +503,7 @@
             };
             addEventListener("resize", (event) => {fixsize()})
             fixsize()
-            // Have a Blessed Day :)
+            // Have a Blessed Day :D
         </script>
     </body>
 </html>
