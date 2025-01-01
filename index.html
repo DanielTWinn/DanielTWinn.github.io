@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script>console.log('Copyright Daniel Winn 2024, MIT License :D')</script>
+        <script>console.log('Copyright Daniel Winn 2024-2025, MIT License :D')</script>
         <meta charset="UTF-8">
         <meta name="description" content="Daniel Winn's (very nice) Website">
         <meta name="keywords" content="Daniel,Winn,Programmer,Coder,Full Stack,Developer,Joyful,DanielJoyful">
@@ -119,7 +119,7 @@
             </button>
             <div id="c1">
                 <h3 id="copyright" style="opacity: 0; float: left;">
-                    &#169; Daniel Winn 2024 | MIT LICENSE
+                    &#169; Daniel Winn 2024-2025 | MIT LICENSE
                 </h3>
             </div>
             <div id="c2"></div>
@@ -360,14 +360,7 @@
                         var em = document.createElement('div');
                         em.classList.add('VoidBox');
                         em.style.backgroundColor = vc;
-                        bcn = 1
-                        if (Math.floor(Math.random()*2) == 1) {
-                            bcn = 1
-                            em.style.borderColor = "rgb(25, 100, 35)";//em.style.borderColor = vbc;
-                        } else {
-                            bcn = 2
-                            em.style.borderColor = "rgb(100, 25, 25)";
-                        }
+                        em.style.borderColor = vbc;
                         if (window.innerWidth > 500 && window.innerHeight > 500) {
                             em.style.width = '100px';
                             em.style.height = '100px';
@@ -382,18 +375,7 @@
                         em.style.transform = 'rotate('+String(Math.floor(Math.random() * 16)-8)+'deg)';
 
                         document.getElementById('void').appendChild(em);
-                        if (bcn == 1) {
-                            TweenColor(em, 100, 25, 25, 1, 80);
-                            em.style.backgroundImage = "url(https://danieltwinn.github.io/images/gifts/gift"+String(Math.floor(Math.random()*4)+1)+".png)";
-                            em.style.backgroundRepeat = "no-repeat";
-                            em.style.backgroundSize = "100% 100%"; 
-                        } else {
-                            TweenColor(em, 25, 100, 35, 1, 80);
-                            em.style.backgroundImage = "url(https://danieltwinn.github.io/images/gifts/gift"+String(Math.floor(Math.random()*4)+1)+".png)";
-                            em.style.backgroundRepeat = "no-repeat";
-                            em.style.backgroundSize = "100% 100%"; 
-                        }
-                        //TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300);
+                        TweenColor(em, vtc[0], vtc[1], vtc[2], 1, 300);
                         TheVoid()
                     } else {
                         setTimeout(function() {
@@ -472,7 +454,7 @@
                         } catch {
                             copyright.style.color = 'rgb(120,120,120)';
                         }
-                        copyright.innerHTML = '&#169; Daniel Winn 2024 | MIT LISENSE';
+                        copyright.innerHTML = '&#169; Daniel Winn 2024-2025 | MIT LISENSE';
                         copyright.id = 'copyright';
                         copyright.style.float = 'left';
                         document.getElementById('c1').appendChild(copyright);
@@ -498,7 +480,7 @@
                         copyright.style.color = window.getComputedStyle(document.getElementById('copyright')).getPropertyValue("color");
                         copyright.style.fontSize = '12px';
                         copyright.style.float = 'right';
-                        copyright.innerHTML = '&#169; Daniel Winn 2024 | MIT LISENSE';
+                        copyright.innerHTML = '&#169; Daniel Winn 2024-2025 | MIT LISENSE';
                         copyright.id = 'copyright';
                         document.getElementById('c2').appendChild(copyright);
                         document.getElementById('c1').innerHTML = '';
