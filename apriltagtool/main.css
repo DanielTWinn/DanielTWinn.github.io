@@ -1,0 +1,29 @@
+body {
+    font-family: monospace;
+    color: white;
+    background-color: #2b2a33;
+}
+
+.limit {
+    position: relative;
+    text-align: center;
+    width: 800px;
+    top: 85px;
+    margin: 0 auto;
+}
+
+.top {
+    background-color: #1f1e25;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    font-weight: 900;
+}
+
+h3 {
+    color: #afafaf;
+    font-style: italic;
+}
