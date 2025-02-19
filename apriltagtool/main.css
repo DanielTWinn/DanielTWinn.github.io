@@ -36,13 +36,13 @@ h3 {
 
 #camera-stream {
     /*object-fit: scale-down;*/
-    width: auto; 
-    height: auto; 
     position: absolute; 
     right: 0; 
     bottom: 0;
     min-width: 100%; 
     min-height: 100%;
+    width: auto; 
+    height: auto; 
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
     background-size: cover;
