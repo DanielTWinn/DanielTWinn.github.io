@@ -12,6 +12,7 @@ body {
     text-align: center;
     width: 400px;
     max-width: 90%;
+    min-height: 40%;
     top: 65px;
     margin: 0 auto;
     overflow: hidden;
@@ -42,7 +43,7 @@ h3 {
     min-width: 100%; 
     min-height: 100%;
     width: auto; 
-    height: auto; 
+    height: 40%; 
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
     background-size: cover;
