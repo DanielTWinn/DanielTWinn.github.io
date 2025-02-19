@@ -10,6 +10,7 @@ body {
     position: relative;
     text-align: center;
     width: 400px;
+    max-width: 90%;
     top: 65px;
     margin: 0 auto;
 }
@@ -32,9 +33,9 @@ h3 {
 }
 
 #camera-stream {
-    height: 100vh;
+    height: 100%;
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
-    background-size: 100vh;
+    background-size: 100%;
     background-repeat: repeat;
 }
