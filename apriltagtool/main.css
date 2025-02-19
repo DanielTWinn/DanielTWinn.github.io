@@ -4,6 +4,7 @@ body {
     background-color: #2b2a33;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .limit {
@@ -13,6 +14,7 @@ body {
     max-width: 90%;
     top: 65px;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .top {
@@ -33,10 +35,17 @@ h3 {
 }
 
 #camera-stream {
-    object-fit: scale-down;
-    height: 100%;
+    /*object-fit: scale-down;*/
+    width: auto; 
+    height: auto; 
+    position: absolute; 
+    right: 0; 
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
-    background-size: 100%;
+    background-size: cover;
     background-repeat: repeat;
+    overflow: hidden;
 }
