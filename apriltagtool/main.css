@@ -33,6 +33,7 @@ h3 {
 }
 
 #camera-stream {
+    object-fit: contain;
     height: 100%;
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
