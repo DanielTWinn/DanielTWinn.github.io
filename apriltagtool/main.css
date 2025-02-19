@@ -2,19 +2,22 @@ body {
     font-family: monospace;
     color: white;
     background-color: #2b2a33;
+    margin: 0;
+    padding: 0;
 }
 
 .limit {
     position: relative;
     text-align: center;
     width: 800px;
-    top: 85px;
+    top: 65px;
     margin: 0 auto;
 }
 
 .top {
     background-color: #1f1e25;
     margin: 0;
+    padding: 0;
     width: 100%;
     text-align: center;
 }
@@ -26,4 +29,12 @@ h1 {
 h3 {
     color: #afafaf;
     font-style: italic;
+}
+
+#camera-stream {
+    width: 100%;
+    background-color: palevioletred;
+    background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
+    background-size: 100%;
+    background-repeat: repeat;
 }
