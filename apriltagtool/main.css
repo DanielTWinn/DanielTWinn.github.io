@@ -32,6 +32,12 @@ h3 {
     color: #afafaf;
     font-style: italic;
 }
+.vidcon {
+    max-height: 40%;
+    min-width: 100%;
+    height: 40%;
+    width: 100%;
+}
 
 #camera-stream {
     object-fit: scale-down;
@@ -41,7 +47,7 @@ h3 {
     min-width: 100%; 
     min-height: 100%;
     width: auto; 
-    max-height: 40%; 
+    height: auto;
     background-color: palevioletred;
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
     background-size: cover;
