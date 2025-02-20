@@ -6,5 +6,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
       .then ((stream) => {
               cameraVideoStream.srcObject = stream
               cameraVideoStream.play()
+
+              const settings = videoTrack.getSettings();
+
+              document.getElementById('vidstats').innerHTML = "FPS: "+settings.frameRate+" | Full Resolution: "+settings.width+"x"+settings.height;
       })
 }
