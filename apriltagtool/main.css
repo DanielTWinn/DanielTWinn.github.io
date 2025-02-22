@@ -31,7 +31,7 @@ body {
 h5, a {
     background-color: #1f1e25;
     margin: 0;
-    padding: 0;
+    padding: 8px 0 0 4px;
     width: 100%;
     text-align: center;
     font-style: italic;
