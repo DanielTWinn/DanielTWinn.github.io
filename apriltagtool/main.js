@@ -21,8 +21,8 @@ var ctx = canvas.getContext('2d');
 
 canvas.style.width ='100%';
 canvas.style.height='100%';
-canvas.width  = "400px";
-canvas.height = "225px";
+canvas.width  = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
 //await new Promise(r => cameraVideoStream.onloadedmetadata = r);
 requestAnimationFrame(function loop() {
