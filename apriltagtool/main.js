@@ -1,11 +1,15 @@
 function scaleVideoDimensions(width, height, maxPx = 400) {
-   const aspectRatio = width / height;
-   if (width > height) {
-       return [Math.min(width, maxPx), Math.round(Math.min(maxPx / aspectRatio, height))];
-   } else {
-       return [Math.round(Math.min(maxPx * aspectRatio, width)), Math.min(height, maxPx)];
-   }
-}
+        const aspectRatio = width / height;
+        if (width > height) {
+            const newWidth = Math.min(width, maxPx);
+            const newHeight = newWidth / aspectRatio;
+            return [Math.round(newWidth), Math.round(newHeight)];
+        } else {
+            const newHeight = Math.min(height, maxPx);
+            const newWidth = newHeight * aspectRatio;
+            return [Math.round(newWidth), Math.round(newHeight)];
+        }
+    }
 
 try {
         const cameraVideoStream = document.getElementById('camera-stream');
