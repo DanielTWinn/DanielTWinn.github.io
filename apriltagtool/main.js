@@ -17,6 +17,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-
-video.addEventListener("play", 
-function() {var i = window.setInterval(function() {alert("ooo"); ctx.drawImage(cameraVideoStream,5,5,640,480)},500);}, false);
+await new Promise(r => video.onloadedmetadata = r);
+requestAnimationFrame(function loop() {
+  ctx.drawImage(video, 0, 0, 16, 12);
+  requestAnimationFrame(loop);
+});
