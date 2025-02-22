@@ -5,7 +5,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
       .getUserMedia({ video: {facingMode: "environment"} })
       .then ((stream) => {
               cameraVideoStream.srcObject = stream
-              cameraVideoStream.play()
+              //cameraVideoStream.play()
               
               const videoTrack = stream.getVideoTracks()[0];
               const settings = videoTrack.getSettings();
@@ -18,4 +18,4 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 video.addEventListener("play", 
-function() {alert("test123"); var i = window.setInterval(function() {ctx.drawImage(v,5,5,640,480)},500);}, false);
+function() {var i = window.setInterval(function() {ctx.drawImage(v,5,5,640,480)},500);}, false);
