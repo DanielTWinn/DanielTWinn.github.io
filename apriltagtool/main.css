@@ -5,6 +5,8 @@ body {
     background-color: #2b2a33;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .limit {
@@ -37,11 +39,11 @@ h5, a {
     font-style: italic;
     text-decoration: none;
     color: #2fd4d4;
+    display: block;
 }
 
 h5 {
     padding: 8px 0 0 4px;
-    display: block;
 }
 
 h1 {
