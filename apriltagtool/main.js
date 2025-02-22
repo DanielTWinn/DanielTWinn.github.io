@@ -1,14 +1,30 @@
 function scaleVideoDimensions(width, height, maxPx = 400) {
+        // Calculate the aspect ratio
         const aspectRatio = width / height;
+    
+        // Determine the scaling factor based on the maximum allowed size
+        let newWidth, newHeight;
+    
         if (width > height) {
-            const newWidth = Math.min(width, maxPx);
-            const newHeight = newWidth / aspectRatio;
-            return [Math.round(newWidth), Math.round(newHeight)];
+            // Scale based on width
+            newWidth = Math.min(width, maxPx);
+            newHeight = newWidth / aspectRatio;
         } else {
-            const newHeight = Math.min(height, maxPx);
-            const newWidth = newHeight * aspectRatio;
-            return [Math.round(newWidth), Math.round(newHeight)];
+            // Scale based on height
+            newHeight = Math.min(height, maxPx);
+            newWidth = newHeight * aspectRatio;
         }
+    
+        // Ensure neither dimension exceeds maxPx
+        if (newWidth > maxPx) {
+            newWidth = maxPx;
+            newHeight = newWidth / aspectRatio;
+        } else if (newHeight > maxPx) {
+            newHeight = maxPx;
+            newWidth = newHeight * aspectRatio;
+        }
+    
+        return [Math.round(newWidth), Math.round(newHeight)];
     }
 
 try {
@@ -37,7 +53,7 @@ try {
                         rcanvasres = restemp
                         canvas.width  = restemp[0];
                         canvas.height = restemp[1];
-                        document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
+                        document.getElementById('canstats').innerHTML = "uFPS: ? | Full Resolution: "+canvasres;
                 })
         }
 
@@ -50,7 +66,7 @@ try {
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
-                        document.getElementById('canstats').innerHTML = "FPS: "+count+" | Full Resolution: "+canvasres;
+                        document.getElementById('canstats').innerHTML = "uFPS: "+count+" | Full Resolution: "+canvasres;
                         count = 0;
                         startTime = Date.now();
                 }
