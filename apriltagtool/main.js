@@ -53,6 +53,19 @@ try {
                 count++;
                 ctx.drawImage(cameraVideoStream, 0, 0, rcanvasres[0], rcanvasres[1]);
 
+                var imageData = ctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
+                var data = imageData.data;
+                        
+                for (var i = 0; i < data.length; i += 4) {
+                    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3; // Calculate the average of the RGB values
+                    data[i] = avg;     // Red
+                    data[i + 1] = avg; // Green
+                    data[i + 2] = avg; // Blue
+                    // Alpha (data[i + 3]) remains unchanged
+                }
+        
+                ctx.putImageData(imageData, 0, 0);
+
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
                         document.getElementById('canstats').innerHTML = "FPS: "+count+" | Full Resolution: "+canvasres;
