@@ -47,7 +47,7 @@ h3 {
     background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
     background-size: cover;
     background-repeat: repeat;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 h4 {
