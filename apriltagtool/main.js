@@ -17,16 +17,5 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-// set canvas size = video size when known
-//cameraVideoStream.addEventListener('loadedmetadata', function() {
-//  canvas.width = "640px";
-//  canvas.height = "480px";
-//});
-
-var $this = this; //cache
-(function loop() {
-    if (!cameraVideoStream.paused && !cameraVideoStream.ended) {
-        ctx.drawImage(cameraVideoStream, 0, 0);
-        setTimeout(loop, 1000 / 5); // drawing at 30fps
-    }
-})();
+video.addEventListener("play", 
+function() {var i = window.setInterval(function() {ctx.drawImage(v,5,5,640,480)},500);}, false);
