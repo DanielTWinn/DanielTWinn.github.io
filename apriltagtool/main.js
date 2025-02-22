@@ -1,3 +1,4 @@
+try {
 const cameraVideoStream = document.getElementById('camera-stream')
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true })) {
@@ -22,3 +23,7 @@ requestAnimationFrame(function loop() {
   ctx.drawImage(cameraVideoStream, 0, 0, 16, 12);
   requestAnimationFrame(loop);
 });
+}
+catch(err) {
+  alert(err.message);
+}
