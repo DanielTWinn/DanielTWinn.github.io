@@ -28,13 +28,14 @@ body {
     text-align: center;
 }
 
-h5 {
+h5, a {
     background-color: #1f1e25;
     margin: 0;
     padding: 0;
     width: 100%;
     text-align: center;
     font-style: italic;
+    color: #2fd4d4;
 }
 
 h1 {
