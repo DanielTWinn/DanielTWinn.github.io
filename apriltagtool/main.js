@@ -17,8 +17,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-await new Promise(r => video.onloadedmetadata = r);
+await new Promise(r => cameraVideoStream.onloadedmetadata = r);
 requestAnimationFrame(function loop() {
-  ctx.drawImage(video, 0, 0, 16, 12);
+  ctx.drawImage(cameraVideoStream, 0, 0, 16, 12);
   requestAnimationFrame(loop);
 });
