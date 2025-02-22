@@ -21,6 +21,6 @@ var ctx = canvas.getContext('2d');
  
 function runFilter() {
     var i = window.setInterval(function() {
-        ctx.drawImage(v,5,5,640,480)
+        ctx.drawImage(cameraVideoStream,5,5,640,480)
     },500);
 };
