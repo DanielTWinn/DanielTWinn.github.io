@@ -15,6 +15,7 @@ body {
     min-height: 40%;
     margin: 0 auto;
     overflow: hidden;
+    border: dashed 2px #1f1e25;
 }
 
 .top {
@@ -44,7 +45,6 @@ h3 {
     background-size: cover;
     background-repeat: repeat;
     overflow: hidden;
-    border: dashed 2px #1f1e25;
 }
 
 #canvas {
