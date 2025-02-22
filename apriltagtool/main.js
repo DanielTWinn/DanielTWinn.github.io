@@ -19,16 +19,14 @@ var ctx = canvas.getContext('2d');
 
 // set canvas size = video size when known
 cameraVideoStream.addEventListener('loadedmetadata', function() {
-  canvas.width = cameraVideoStream.videoWidth;
-  canvas.height = cameraVideoStream.videoHeight;
+  canvas.width = "640px";
+  canvas.height = "480px";
 });
 
-cameraVideoStream.addEventListener('play', function() {
-  var $this = this; //cache
-  (function loop() {
+var $this = this; //cache
+(function loop() {
     if (!$this.paused && !$this.ended) {
       ctx.drawImage($this, 0, 0);
       setTimeout(loop, 1000 / 5); // drawing at 30fps
     }
-  })();
-}, 0);
+})();
