@@ -44,6 +44,11 @@ h3 {
     overflow: hidden;
 }
 
+#canvas {
+    width: 100%; 
+    height: auto;
+}
+
 h4 {
     font-style: italic;
     color: rgb(225, 225, 225);
