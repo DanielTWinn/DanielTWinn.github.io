@@ -45,7 +45,6 @@ h3 {
     background-size: cover;
     background-repeat: repeat;
     overflow: hidden;
-    border: 2px dashed #1f1e25;
 }
 
 #canvas {
