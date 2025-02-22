@@ -31,8 +31,8 @@ try {
                         var restemp = scaleVideoDimensions(settings.width, settings.height);
                         canvasres = restemp[0]+"x"+restemp[1]
                         rcanvasres = restemp
-                        canvas.width  = restemp[0]+"px";
-                        canvas.height = restemp[1]+"px";
+                        canvas.width  = restemp[0];
+                        canvas.height = restemp[1];
                         document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
                 })
         }
