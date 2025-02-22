@@ -40,6 +40,7 @@ try {
         var startTime = Date.now(); 
 
         requestAnimationFrame(function loop() {
+                count++;
                 ctx.drawImage(cameraVideoStream, 0, 0, 400, 225);
 
                 var elapsedTime = Date.now() - startTime;
