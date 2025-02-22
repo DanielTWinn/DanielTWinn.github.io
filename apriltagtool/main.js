@@ -13,3 +13,22 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
               document.getElementById('vidstats').innerHTML = "FPS: "+settings.frameRate+" | Full Resolution: "+settings.width+"x"+settings.height;
       })
 }
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+
+// set canvas size = video size when known
+cameraVideoStream.addEventListener('loadedmetadata', function() {
+  canvas.width = cameraVideoStream.videoWidth;
+  canvas.height = cameraVideoStream.videoHeight;
+});
+
+video.addEventListener('play', function() {
+  var $this = this; //cache
+  (function loop() {
+    if (!$this.paused && !$this.ended) {
+      ctx.drawImage($this, 0, 0);
+      setTimeout(loop, 1000 / 5); // drawing at 30fps
+    }
+  })();
+}, 0);
