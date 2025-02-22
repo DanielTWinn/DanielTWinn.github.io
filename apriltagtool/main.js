@@ -18,15 +18,17 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 // set canvas size = video size when known
-cameraVideoStream.addEventListener('loadedmetadata', function() {
-  canvas.width = "640px";
-  canvas.height = "480px";
-});
+//cameraVideoStream.addEventListener('loadedmetadata', function() {
+//  canvas.width = "640px";
+//  canvas.height = "480px";
+//});
 
 var $this = this; //cache
 (function loop() {
     if (!$this.paused && !$this.ended) {
-      ctx.drawImage($this, 0, 0);
-      setTimeout(loop, 1000 / 5); // drawing at 30fps
+        alert("before");
+        ctx.drawImage($this, 0, 0);
+        alert("drawed");
+        setTimeout(loop, 1000 / 5); // drawing at 30fps
     }
 })();
