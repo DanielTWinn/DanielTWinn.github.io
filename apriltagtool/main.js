@@ -1,3 +1,4 @@
+document.getElementById('vidstats').style.color = "yellow";
 try {
 const cameraVideoStream = document.getElementById('camera-stream')
 
