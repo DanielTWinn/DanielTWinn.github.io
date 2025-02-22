@@ -18,4 +18,4 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 video.addEventListener("play", 
-function() {var i = window.setInterval(function() {ctx.drawImage(v,5,5,640,480)},500); alert("test123");}, false);
+function() {alert("test123"); var i = window.setInterval(function() {ctx.drawImage(v,5,5,640,480)},500);}, false);
