@@ -19,4 +19,4 @@ var ctx = canvas.getContext('2d');
 
 
 video.addEventListener("play", 
-function() {var i = window.setInterval(function() {ctx.drawImage(cameraVideoStream,5,5,640,480)},500);}, false);
+function() {var i = window.setInterval(function() {alert("ooo"); ctx.drawImage(cameraVideoStream,5,5,640,480)},500);}, false);
