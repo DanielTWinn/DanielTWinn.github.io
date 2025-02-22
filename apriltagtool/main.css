@@ -83,3 +83,13 @@ h4 {
     font-style: italic;
     color: rgb(225, 225, 225);
 }
+
+button {
+    background-color: #1f1e25;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    border: none;
+    padding: 5px;
+    margin: none;
+}

@@ -1,31 +1,11 @@
 function scaleVideoDimensions(width, height, maxPx = 400) {
-        // Calculate the aspect ratio
-        const aspectRatio = width / height;
-    
-        // Determine the scaling factor based on the maximum allowed size
-        let newWidth, newHeight;
-    
-        if (width > height) {
-            // Scale based on width
-            newWidth = Math.min(width, maxPx);
-            newHeight = newWidth / aspectRatio;
-        } else {
-            // Scale based on height
-            newHeight = Math.min(height, maxPx);
-            newWidth = newHeight * aspectRatio;
-        }
-    
-        // Ensure neither dimension exceeds maxPx
-        if (newWidth > maxPx) {
-            newWidth = maxPx;
-            newHeight = newWidth / aspectRatio;
-        } else if (newHeight > maxPx) {
-            newHeight = maxPx;
-            newWidth = newHeight * aspectRatio;
-        }
-    
-        return [Math.round(newWidth), Math.round(newHeight)];
-    }
+   const aspectRatio = width / height;
+   if (width > height) {
+       return [Math.min(width, maxPx), Math.round(Math.min(maxPx / aspectRatio, height))];
+   } else {
+       return [Math.round(Math.min(maxPx * aspectRatio, width)), Math.min(height, maxPx)];
+   }
+}
 
 try {
         const cameraVideoStream = document.getElementById('camera-stream');
@@ -53,9 +33,18 @@ try {
                         rcanvasres = restemp
                         canvas.width  = restemp[0];
                         canvas.height = restemp[1];
-                        document.getElementById('canstats').innerHTML = "uFPS: ? | Full Resolution: "+canvasres;
+                        document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
                 })
         }
+
+        document.getElementById('turn').addEventListener('click', function() {
+                var t = rcanvasres[0];
+                rcanvasres[0] = rcanvasres[1];
+                rcanvasres[1] = t;
+                canvasres = rcanvasres[0]+"x"+rcanvasres[1];
+                canvas.width  = rcanvasres[0];
+                canvas.height = rcanvasres[1];
+        });
 
         var count = 0;
         var startTime = Date.now(); 
@@ -66,7 +55,7 @@ try {
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
-                        document.getElementById('canstats').innerHTML = "uFPS: "+count+" | Full Resolution: "+canvasres;
+                        document.getElementById('canstats').innerHTML = "FPS: "+count+" | Full Resolution: "+canvasres;
                         count = 0;
                         startTime = Date.now();
                 }
