@@ -28,3 +28,4 @@ catch(err) {
     document.getElementById('vidstats').innerHTML = err.message;
     document.getElementById('vidstats').style.color = "red";
 }
+document.getElementById('vidstats').style.color = "blue";
