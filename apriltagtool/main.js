@@ -19,9 +19,14 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
+canvas.style.width ='100%';
+canvas.style.height='100%';
+canvas.width  = "400px";
+canvas.height = "225px";
+
 //await new Promise(r => cameraVideoStream.onloadedmetadata = r);
 requestAnimationFrame(function loop() {
-  ctx.drawImage(cameraVideoStream, 0, 0, 16, 12);
+  ctx.drawImage(cameraVideoStream, 0, 0, 400, 225);
   requestAnimationFrame(loop);
 });
 }
