@@ -25,5 +25,6 @@ requestAnimationFrame(function loop() {
 });
 }
 catch(err) {
-  alert(err.message);
+    document.getElementById('vidstats').innerHTML = err.message;
+    document.getElementById('vidstats').style.color = "red";
 }
