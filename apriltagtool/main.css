@@ -13,7 +13,8 @@ body {
     width: 400px;
     max-width: 99%;
     min-height: 40%;
-    margin: 0;
+    margin: 0 auto;
+    padding: 0;
     overflow: hidden;
     border-left: 2px dashed #1f1e25;
     border-right: 2px dashed #1f1e25;
@@ -29,16 +30,20 @@ body {
 
 h1 {
     margin: 0;
-    padding: 8px 0 0 8px;
+    padding: 8px 0;
     font-weight: 900;
 }
 
 h3 {
     color: #afafaf;
     font-style: italic;
+    margin: 0;
+    padding: 2px;
 }
 
 #camera-stream {
+    margin: 0;
+    padding: 0;
     width: 100%; 
     height: auto;
     background-color: palevioletred;
