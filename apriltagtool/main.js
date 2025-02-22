@@ -1,37 +1,57 @@
-document.getElementById('vidstats').style.color = "yellow";
+function scaleVideoDimensions(width, height, maxPx = 400) {
+   const aspectRatio = width / height;
+   if (width > height) {
+       return [Math.min(width, maxPx), Math.round(Math.min(maxPx / aspectRatio, height))];
+   } else {
+       return [Math.round(Math.min(maxPx * aspectRatio, width)), Math.min(height, maxPx)];
+   }
+}
+
 try {
-const cameraVideoStream = document.getElementById('camera-stream')
+        const cameraVideoStream = document.getElementById('camera-stream');
+        var canvasres = "???";
 
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true })) {
-    navigator.mediaDevices
-      .getUserMedia({ video: {facingMode: "environment"} })
-      .then ((stream) => {
-              cameraVideoStream.srcObject = stream
-              //cameraVideoStream.play()
-              
-              const videoTrack = stream.getVideoTracks()[0];
-              const settings = videoTrack.getSettings();
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true })) {
+            navigator.mediaDevices
+              .getUserMedia({ video: {facingMode: "environment"} })
+              .then ((stream) => {
+                        cameraVideoStream.srcObject = stream
+                        //cameraVideoStream.play()
 
-              document.getElementById('vidstats').innerHTML = "FPS: "+settings.frameRate+" | Full Resolution: "+settings.width+"x"+settings.height;
-      })
-}
+                        const videoTrack = stream.getVideoTracks()[0];
+                        const settings = videoTrack.getSettings();
+                        document.getElementById('vidstats').innerHTML = "FPS: "+settings.frameRate+" | Full Resolution: "+settings.width+"x"+settings.height;
+                        
+                        var restemp = scaleVideoDimensions(settings.width, settings.height);
+                        canvasres = restemp[0]+"x"+restemp[1]
+                        document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
+                })
+        }
 
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
 
-canvas.style.width ='100%';
-canvas.style.height='100%';
-canvas.width  = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
+        canvas.style.width ='100%';
+        canvas.style.height='100%';
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
 
-//await new Promise(r => cameraVideoStream.onloadedmetadata = r);
-requestAnimationFrame(function loop() {
-  ctx.drawImage(cameraVideoStream, 0, 0, 400, 225);
-  requestAnimationFrame(loop);
-});
-}
-catch(err) {
+        var count = 0;
+        var startTime = Date.now(); 
+
+        requestAnimationFrame(function loop() {
+                ctx.drawImage(cameraVideoStream, 0, 0, 400, 225);
+
+                var elapsedTime = Date.now() - startTime;
+                if (elapsedTime >= 1000) {
+                        document.getElementById('canstats').innerHTML = "FPS: "+count+" | Full Resolution: "+canvasres;
+                        count = 0;
+                        startTime = Date.now();
+                }
+
+                requestAnimationFrame(loop);
+        });
+} catch(err) {
     document.getElementById('vidstats').innerHTML = err.message;
     document.getElementById('vidstats').style.color = "red";
 }
-document.getElementById('vidstats').style.color = "blue";
