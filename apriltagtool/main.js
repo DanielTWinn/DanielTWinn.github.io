@@ -9,6 +9,12 @@ function scaleVideoDimensions(width, height, maxPx = 400) {
 
 try {
         const cameraVideoStream = document.getElementById('camera-stream');
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+        canvas.style.width ='100%';
+        canvas.style.height='100%';
+        var rcanvasres = [16, 9];
         var canvasres = "???";
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ video: true })) {
@@ -24,24 +30,19 @@ try {
                         
                         var restemp = scaleVideoDimensions(settings.width, settings.height);
                         canvasres = restemp[0]+"x"+restemp[1]
+                        rcanvasres = restemp
+                        canvas.width  = restemp[0]+"px";
+                        canvas.height = restemp[1]+"px";
                         document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
                 })
         }
-
-        var canvas = document.getElementById('canvas');
-        var ctx = canvas.getContext('2d');
-
-        canvas.style.width ='100%';
-        canvas.style.height='100%';
-        canvas.width  = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
 
         var count = 0;
         var startTime = Date.now(); 
 
         requestAnimationFrame(function loop() {
                 count++;
-                ctx.drawImage(cameraVideoStream, 0, 0, 400, 225);
+                ctx.drawImage(cameraVideoStream, 0, 0, rcanvasres[0], rcanvasres[1]);
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
