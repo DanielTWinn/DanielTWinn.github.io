@@ -23,7 +23,7 @@ cameraVideoStream.addEventListener('loadedmetadata', function() {
   canvas.height = cameraVideoStream.videoHeight;
 });
 
-video.addEventListener('play', function() {
+cameraVideoStream.addEventListener('play', function() {
   var $this = this; //cache
   (function loop() {
     if (!$this.paused && !$this.ended) {
