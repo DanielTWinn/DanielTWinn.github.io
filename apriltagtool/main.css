@@ -27,7 +27,7 @@ body {
 
 h1 {
     margin: 0;
-    padding: 0;
+    padding: 8px 0 0 0;
     font-weight: 900;
 }
 
@@ -49,6 +49,11 @@ h3 {
 #canvas {
     width: 100%; 
     height: auto;
+    background-color: palevioletred;
+    background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
+    background-size: cover;
+    background-repeat: repeat;
+    overflow: hidden;
 }
 
 h4 {
