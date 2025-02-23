@@ -50,6 +50,21 @@ function clusterPixels(gradientMagnitude, gradientDirection, width, height, magn
     return labels;
 }
 
+const colorPalette = [
+    [255, 0, 0],    // Red
+    [0, 255, 0],    // Green
+    [0, 0, 255],    // Blue
+    [255, 255, 0],  // Yellow
+    [255, 0, 255],  // Magenta
+    [0, 255, 255],  // Cyan
+    [128, 0, 0],    // Maroon
+    [0, 128, 0],    // Dark Green
+    [0, 0, 128],    // Navy
+    [128, 128, 0],  // Olive
+    [128, 0, 128],  // Purple
+    [0, 128, 128]   // Teal
+];
+
 function visualizeEdgeComponents(gradientMagnitude, width, height, edgeThreshold) {
     const outputImageData = new ImageData(width, height);
     const labels = new Array(gradientMagnitude.length).fill(-1);
@@ -94,21 +109,17 @@ function visualizeEdgeComponents(gradientMagnitude, width, height, edgeThreshold
     }
 
     // Second pass: Assign colors based on labels
-    const colors = [];
-    for (let i = 0; i <= currentLabel; i++) {
-        colors.push([Math.random() * 255, Math.random() * 255, Math.random() * 255, 255]); // Random colors
-    }
-
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = y * width + x;
             const label = labels[index];
             if (label > 0) { // Only color labeled edges
-                const color = colors[label];
+                const colorIndex = (label - 1) % colorPalette.length; // Cycle through the color palette
+                const color = colorPalette[colorIndex];
                 outputImageData.data[index * 4] = color[0];     // Red
                 outputImageData.data[index * 4 + 1] = color[1]; // Green
                 outputImageData.data[index * 4 + 2] = color[2]; // Blue
-                outputImageData.data[index * 4 + 3] = color[3]; // Alpha
+                outputImageData.data[index * 4 + 3] = 255;      // Alpha
             }
         }
     }
