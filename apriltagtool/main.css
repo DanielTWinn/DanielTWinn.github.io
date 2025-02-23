@@ -98,3 +98,9 @@ button {
     padding: 5px;
     margin: none;
 }
+
+#version {
+    color: orangered;
+    font-style: italic;
+    font-weight: 900;
+}

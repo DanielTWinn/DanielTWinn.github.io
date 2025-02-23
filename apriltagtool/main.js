@@ -1,3 +1,8 @@
+console.log("© 2025 Daniel Winn");
+const version = 91;
+console.log("V"+version);
+document.getElementById("version").innerHTML = version;
+
 function scaleVideoDimensions(width, height, maxPx = 400) {
    const aspectRatio = width / height;
    if (width > height) {
@@ -186,7 +191,7 @@ function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, he
 
 function drawLineSegments(ctx, lineSegments) {
     ctx.strokeStyle = 'orange'; // Set the color for the line segments
-    ctx.lineWidth = 2; // Set the line width
+    ctx.lineWidth = 1; // Set the line width
 
     lineSegments.forEach(segment => {
         ctx.beginPath();
@@ -203,7 +208,7 @@ try {
         var ccanvas = document.getElementById('ccanvas');
         var cctx = ccanvas.getContext('2d');
         var lcanvas = document.getElementById('ccanvas');
-        var lctx = ccanvas.getContext('2d');
+        var lctx = lcanvas.getContext('2d');
 
         gcanvas.style.width ='100%';
         gcanvas.style.height='100%';
@@ -331,7 +336,7 @@ try {
                 const lineSegments = fitLineSegments(labels, gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1]);
 
                 // Clear the canvas before drawing the new frame
-                cctx.clearRect(0, 0, rcanvasres[0], rcanvasres[1]);
+                lctx.clearRect(0, 0, rcanvasres[0], rcanvasres[1]);
 
                 // Draw the fitted line segments
                 drawLineSegments(lctx, lineSegments);
