@@ -7,13 +7,82 @@ function scaleVideoDimensions(width, height, maxPx = 400) {
    }
 }
 
+function clusterPixels(gradientMagnitude, gradientDirection, width, height, magnitudeThreshold, directionThreshold) {
+    const labels = new Array(gradientMagnitude.length).fill(-1);
+    let currentLabel = 0;
+
+    function isSimilar(g1, g2) {
+        return (
+            Math.abs(g1.magnitude - g2.magnitude) < magnitudeThreshold &&
+            Math.abs(g1.direction - g2.direction) < directionThreshold
+        );
+    }
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = y * width + x;
+            if (labels[index] === -1) { // Not labeled yet
+                labels[index] = currentLabel;
+                const queue = [[x, y]];
+
+                while (queue.length > 0) {
+                    const [cx, cy] = queue.pop();
+                    for (let ny = cy - 1; ny <= cy + 1; ny++) {
+                        for (let nx = cx - 1; nx <= cx + 1; nx++) {
+                            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                const neighborIndex = ny * width + nx;
+                                if (labels[neighborIndex] === -1 && isSimilar(
+                                    { magnitude: gradientMagnitude[index], direction: gradientDirection[index] },
+                                    { magnitude: gradientMagnitude[neighborIndex], direction: gradientDirection[neighborIndex] }
+                                )) {
+                                    labels[neighborIndex] = currentLabel;
+                                    queue.push([nx, ny]);
+                                }
+                            }
+                        }
+                    }
+                }
+                currentLabel++;
+            }
+        }
+    }
+
+    return labels;
+}
+
+function visualizeClusters(labels, width, height) {
+    const outputImageData = new ImageData(width, height);
+    const colors = [];
+
+    // Generate random colors for each cluster
+    for (let i = 0; i <= Math.max(...labels); i++) {
+        colors.push([Math.random() * 255, Math.random() * 255, Math.random() * 255, 255]); // RGBA
+    }
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = y * width + x;
+            const label = labels[index];
+            const color = colors[label] || [0, 0, 0, 255]; // Default to black if no label
+            outputImageData.data[index * 4] = color[0];     // Red
+            outputImageData.data[index * 4 + 1] = color[1]; // Green
+            outputImageData.data[index * 4 + 2] = color[2]; // Blue
+            outputImageData.data[index * 4 + 3] = color[3]; // Alpha
+        }
+    }
+
+    return outputImageData;
+}
+
 try {
         const cameraVideoStream = document.getElementById('camera-stream');
-        var canvas = document.getElementById('canvas');
-        var ctx = canvas.getContext('2d');
+        var gcanvas = document.getElementById('gcanvas');
+        var gctx = gcanvas.getContext('2d');
+        var ccanvas = document.getElementById('ccanvas');
+        var cctx = ccanvas.getContext('2d');
 
-        canvas.style.width ='100%';
-        canvas.style.height='100%';
+        g.style.width ='100%';
+        gcanvas.style.height='100%';
         var rcanvasres = [16, 9];
         var canvasres = "???";
 
@@ -31,8 +100,10 @@ try {
                         var restemp = scaleVideoDimensions(settings.width, settings.height);
                         canvasres = restemp[0]+"x"+restemp[1]
                         rcanvasres = restemp
-                        canvas.width  = restemp[0];
-                        canvas.height = restemp[1];
+                        gcanvas.width  = restemp[0];
+                        gcanvas.height = restemp[1];
+                        ccanvas.width  = restemp[0];
+                        ccanvas.height = restemp[1];
                         document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
                 })
         }
@@ -42,8 +113,10 @@ try {
                 rcanvasres[0] = rcanvasres[1];
                 rcanvasres[1] = t;
                 canvasres = rcanvasres[0]+"x"+rcanvasres[1];
-                canvas.width  = rcanvasres[0];
-                canvas.height = rcanvasres[1];
+                gcanvas.width  = rcanvasres[0];
+                gcanvas.height = rcanvasres[1];
+                ccanvas.width  = rcanvasres[0];
+                ccanvas.height = rcanvasres[1];
         });
 
         var count = 0;
@@ -51,10 +124,10 @@ try {
 
         requestAnimationFrame(function loop() {
                 count++;
-                ctx.drawImage(cameraVideoStream, 0, 0, rcanvasres[0], rcanvasres[1]);
+                gctx.drawImage(cameraVideoStream, 0, 0, rcanvasres[0], rcanvasres[1]);
 
                 // Get the image data from the canvas
-                var imageData = ctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
+                var imageData = gctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
                 var data = imageData.data;
                         
                 // Create arrays for gradient magnitudes and directions
@@ -99,7 +172,7 @@ try {
                 }
         
                 // Create a new image data array for the output
-                var outputData = ctx.createImageData(rcanvasres[0], rcanvasres[1]);
+                var outputData = gctx.createImageData(rcanvasres[0], rcanvasres[1]);
                 for (var i = 0; i < gradientMagnitude.length; i++) {
                     outputData.data[i * 4] = gradientMagnitude[i];     // Red
                     outputData.data[i * 4 + 1] = gradientMagnitude[i]; // Green
@@ -107,8 +180,19 @@ try {
                     outputData.data[i * 4 + 3] = 255;                  // Alpha (fully opaque)
                 }
         
+                // Put the output image data back to the gcanvas
+                gctx.putImageData(outputData, 0, 0);
+
+                // Step 2: Cluster pixels
+                const magnitudeThreshold = 10; // Set your threshold for magnitude
+                const directionThreshold = Math.PI / 8; // Set your threshold for direction (in radians)
+                const labels = clusterPixels(gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1], magnitudeThreshold, directionThreshold);
+
+                // Step 3: Visualize clusters
+                const outputImageData = visualizeClusters(labels, rcanvasres[0], rcanvasres[1]);
+
                 // Put the output image data back to the canvas
-                ctx.putImageData(outputData, 0, 0);
+                cctx.putImageData(outputImageData, 0, 0);
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
