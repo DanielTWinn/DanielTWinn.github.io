@@ -81,7 +81,7 @@ try {
         var ccanvas = document.getElementById('ccanvas');
         var cctx = ccanvas.getContext('2d');
 
-        g.style.width ='100%';
+        gcanvas.style.width ='100%';
         gcanvas.style.height='100%';
         var rcanvasres = [16, 9];
         var canvasres = "???";
