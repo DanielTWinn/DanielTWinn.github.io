@@ -53,18 +53,62 @@ try {
                 count++;
                 ctx.drawImage(cameraVideoStream, 0, 0, rcanvasres[0], rcanvasres[1]);
 
+                // Get the image data from the canvas
                 var imageData = ctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
                 var data = imageData.data;
                         
-                for (var i = 0; i < data.length; i += 4) {
-                    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3; // Calculate the average of the RGB values
-                    data[i] = avg;     // Red
-                    data[i + 1] = avg; // Green
-                    data[i + 2] = avg; // Blue
-                    // Alpha (data[i + 3]) remains unchanged
+                // Create arrays for gradient magnitudes and directions
+                var gradientMagnitude = new Uint8ClampedArray(data.length / 4);
+                var gradientDirection = new Float32Array(data.length / 4);
+                        
+                // Convert to grayscale and compute gradients
+                for (var y = 1; y < rcanvasres[1] - 1; y++) {
+                    for (var x = 1; x < rcanvasres[0] - 1; x++) {
+                        // Calculate the index for the current pixel
+                        var idx = (y * rcanvasres[0] + x) * 4;
+                        
+                        // Get the grayscale value
+                        var gray = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+                        
+                        // Sobel operator kernels
+                        var gx = (
+                            -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
+                            -2 * data[y * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[y * rcanvasres[0] * 4 + (x + 1) * 4] +
+                            -data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
+                        );
+                
+                        var gy = (
+                            -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] - 2 * data[(y - 1) * rcanvasres[0] * 4 + x * 4] - data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
+                            data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[(y + 1) * rcanvasres[0] * 4 + x * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
+                        );
+                
+                        // Calculate magnitude and direction
+                        var magnitude = Math.sqrt(gx * gx + gy * gy);
+                        var direction = Math.atan2(gy, gx); // Direction in radians
+                
+                        // Store the magnitude and direction
+                        gradientMagnitude[idx / 4] = magnitude;
+                        gradientDirection[idx / 4] = direction;
+                    }
                 }
         
-                ctx.putImageData(imageData, 0, 0);
+                // Normalize the gradient magnitude for display
+                var maxMagnitude = Math.max(...gradientMagnitude);
+                for (var i = 0; i < gradientMagnitude.length; i++) {
+                    gradientMagnitude[i] = (gradientMagnitude[i] / maxMagnitude) * 255; // Scale to 0-255
+                }
+        
+                // Create a new image data array for the output
+                var outputData = ctx.createImageData(rcanvasres[0], rcanvasres[1]);
+                for (var i = 0; i < gradientMagnitude.length; i++) {
+                    outputData.data[i * 4] = gradientMagnitude[i];     // Red
+                    outputData.data[i * 4 + 1] = gradientMagnitude[i]; // Green
+                    outputData.data[i * 4 + 2] = gradientMagnitude[i]; // Blue
+                    outputData.data[i * 4 + 3] = 255;                  // Alpha (fully opaque)
+                }
+        
+                // Put the output image data back to the canvas
+                ctx.putImageData(outputData, 0, 0);
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
