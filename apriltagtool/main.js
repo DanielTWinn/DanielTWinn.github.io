@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 95;
+const version = 96;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -155,7 +155,7 @@ function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, he
     for (const points of Object.values(labelPoints)) {
         if (points.length < 2) continue; // Need at least two points to fit a line
 
-        // Calculate weighted averages for line fitting
+        // Calculate the weighted average for the line fitting
         const sum = points.reduce((acc, point) => {
             acc.x += point.x * point.magnitude;
             acc.y += point.y * point.magnitude;
@@ -166,13 +166,13 @@ function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, he
         const avgX = sum.x / sum.weight;
         const avgY = sum.y / sum.weight;
 
-        // Calculate direction based on the average position
+        // Calculate the direction based on the points
         const direction = Math.atan2(avgY, avgX);
         const length = Math.sqrt(avgX * avgX + avgY * avgY);
 
-        // Normalize direction and create start and end points
-        const start = { x: avgX - length / 2 * Math.cos(direction), y: avgY - length / 2 * Math.sin(direction) };
-        const end = { x: avgX + length / 2 * Math.cos(direction), y: avgY + length / 2 * Math.sin(direction) };
+        // Create start and end points based on the average position
+        const start = { x: avgX - (length / 2) * Math.cos(direction), y: avgY - (length / 2) * Math.sin(direction) };
+        const end = { x: avgX + (length / 2) * Math.cos(direction), y: avgY + (length / 2) * Math.sin(direction) };
 
         // Only add segments that are long enough
         if (length >= MIN_LENGTH_TO_DRAW) {
