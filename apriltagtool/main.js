@@ -207,7 +207,7 @@ try {
         var gctx = gcanvas.getContext('2d');
         var ccanvas = document.getElementById('ccanvas');
         var cctx = ccanvas.getContext('2d');
-        var lcanvas = document.getElementById('ccanvas');
+        var lcanvas = document.getElementById('lcanvas');
         var lctx = lcanvas.getContext('2d');
 
         gcanvas.style.width ='100%';
