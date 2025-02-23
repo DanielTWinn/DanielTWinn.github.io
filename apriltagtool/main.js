@@ -50,24 +50,24 @@ function clusterPixels(gradientMagnitude, gradientDirection, width, height, magn
     return labels;
 }
 
-function visualizeClusters(labels, width, height) {
+function visualizeEdges(gradientMagnitude, width, height, edgeThreshold) {
     const outputImageData = new ImageData(width, height);
-    const colors = [];
-
-    // Generate random colors for each cluster
-    for (let i = 0; i <= Math.max(...labels); i++) {
-        colors.push([Math.random() * 255, Math.random() * 255, Math.random() * 255, 255]); // RGBA
+    
+    // Initialize the output image data to transparent
+    for (let i = 0; i < outputImageData.data.length; i += 4) {
+        outputImageData.data[i + 3] = 0; // Set alpha to 0 (transparent)
     }
 
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = y * width + x;
-            const label = labels[index];
-            const color = colors[label] || [0, 0, 0, 255]; // Default to black if no label
-            outputImageData.data[index * 4] = color[0];     // Red
-            outputImageData.data[index * 4 + 1] = color[1]; // Green
-            outputImageData.data[index * 4 + 2] = color[2]; // Blue
-            outputImageData.data[index * 4 + 3] = color[3]; // Alpha
+            if (gradientMagnitude[index] > edgeThreshold) {
+                // Set the color for the edge
+                outputImageData.data[index * 4] = 255;     // Red
+                outputImageData.data[index * 4 + 1] = 0;   // Green
+                outputImageData.data[index * 4 + 2] = 0;   // Blue
+                outputImageData.data[index * 4 + 3] = 255; // Alpha (fully opaque)
+            }
         }
     }
 
@@ -188,8 +188,9 @@ try {
                 const directionThreshold = Math.PI / 8; // Set your threshold for direction (in radians)
                 const labels = clusterPixels(gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1], magnitudeThreshold, directionThreshold);
 
-                // Step 3: Visualize clusters
-                const outputImageData = visualizeClusters(labels, rcanvasres[0], rcanvasres[1]);
+                // Step 3: Visualize edges based on the gradient magnitudes
+                const edgeThreshold = 80; // Set your threshold for edge detection
+                const outputImageData = visualizeEdges(gradientMagnitude, rcanvasres[0], rcanvasres[1], edgeThreshold);
 
                 // Put the output image data back to the canvas
                 cctx.putImageData(outputImageData, 0, 0);
