@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 100;
+const version = 101;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -298,6 +298,17 @@ try {
                 })
         }
 
+        // Initialize the slider and set up the event listener
+        var slider = document.getElementById('thresholdSlider');
+        var thresholdValueLabel = document.getElementById('thresholdValue');
+
+        // Update the canvas when the slider value changes
+        slider.addEventListener('input', function() {
+            var thresholdPercent = slider.value;
+            thresholdValueLabel.textContent = thresholdPercent; // Update label
+            updateCanvas(thresholdPercent); // Update the canvas
+        });
+
         document.getElementById('turn').addEventListener('click', function() {
                 var t = rcanvasres[0];
                 rcanvasres[0] = rcanvasres[1];
@@ -322,8 +333,7 @@ try {
                 var imageData = gctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
                 var data = imageData.data;
                         
-                var thresholdPercent = 85; // Adjustable threshold percentage
-                var result = computeGradients(data, rcanvasres, thresholdPercent);
+                var result = computeGradients(data, rcanvasres, slider.value);
 
                 var gradientMagnitude = result.gradientMagnitude;
                 var gradientDirection = result.gradientDirection;
