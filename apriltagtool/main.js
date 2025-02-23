@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 99;
+const version = 100;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -322,7 +322,7 @@ try {
                 var imageData = gctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
                 var data = imageData.data;
                         
-                var thresholdPercent = 70; // Adjustable threshold percentage
+                var thresholdPercent = 85; // Adjustable threshold percentage
                 var result = computeGradients(data, rcanvasres, thresholdPercent);
 
                 var gradientMagnitude = result.gradientMagnitude;

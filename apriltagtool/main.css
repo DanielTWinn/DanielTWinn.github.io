@@ -73,14 +73,8 @@ h3 {
     overflow: hidden;
 }
 
-#canvas {
-    width: 100%; 
-    height: auto;
-    background-color: palevioletred;
-    background-image: url("https://danieltwinn.github.io/apriltagtool/error.png");
-    background-size: cover;
-    background-repeat: repeat;
-    overflow: hidden;
+canvas {
+    border-top: 4px dashed #1f1e25;
 }
 
 h4 {
