@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 97;
+const version = 98;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -10,6 +10,66 @@ function scaleVideoDimensions(width, height, maxPx = 400) {
    } else {
        return [Math.round(Math.min(maxPx * aspectRatio, width)), Math.min(height, maxPx)];
    }
+}
+
+// Function to compute gradients and filter based on a percentage threshold
+function computeGradients(data, rcanvasres, thresholdPercent) {
+    // Create arrays for gradient magnitudes and directions
+    var gradientMagnitude = new Uint8ClampedArray(data.length / 4);
+    var gradientDirection = new Float32Array(data.length / 4);
+    
+    // Convert to grayscale and compute gradients
+    for (var y = 1; y < rcanvasres[1] - 1; y++) {
+        for (var x = 1; x < rcanvasres[0] - 1; x++) {
+            // Calculate the index for the current pixel
+            var idx = (y * rcanvasres[0] + x) * 4;
+            
+            // Get the grayscale value
+            var gray = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+            
+            // Sobel operator kernels
+            var gx = (
+                -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
+                -2 * data[y * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[y * rcanvasres[0] * 4 + (x + 1) * 4] +
+                -data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
+            );
+
+            var gy = (
+                -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] - 2 * data[(y - 1) * rcanvasres[0] * 4 + x * 4] - data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
+                data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[(y + 1) * rcanvasres[0] * 4 + x * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
+            );
+
+            // Calculate magnitude and direction
+            var magnitude = Math.sqrt(gx * gx + gy * gy);
+            var direction = Math.atan2(gy, gx); // Direction in radians
+
+            // Store the magnitude and direction
+            gradientMagnitude[idx / 4] = magnitude;
+            gradientDirection[idx / 4] = direction;
+        }
+    }
+
+    // Calculate the maximum magnitude for normalization
+    var maxMagnitude = Math.max(...gradientMagnitude);
+
+    // Calculate the threshold value based on the percentage
+    var thresholdValue = (thresholdPercent / 100) * maxMagnitude;
+
+    // Filter the results based on the threshold
+    var filteredMagnitudes = [];
+    var filteredDirections = [];
+    
+    for (var i = 0; i < gradientMagnitude.length; i++) {
+        if (gradientMagnitude[i] > thresholdValue) {
+            filteredMagnitudes.push(gradientMagnitude[i]);
+            filteredDirections.push(gradientDirection[i]);
+        }
+    }
+
+    return {
+        magnitudes: filteredMagnitudes,
+        directions: filteredDirections
+    };
 }
 
 function clusterPixels(gradientMagnitude, gradientDirection, width, height, magnitudeThreshold, directionThreshold) {
@@ -260,40 +320,11 @@ try {
                 var imageData = gctx.getImageData(0, 0, rcanvasres[0], rcanvasres[1]);
                 var data = imageData.data;
                         
-                // Create arrays for gradient magnitudes and directions
-                var gradientMagnitude = new Uint8ClampedArray(data.length / 4);
-                var gradientDirection = new Float32Array(data.length / 4);
-                        
-                // Convert to grayscale and compute gradients
-                for (var y = 1; y < rcanvasres[1] - 1; y++) {
-                    for (var x = 1; x < rcanvasres[0] - 1; x++) {
-                        // Calculate the index for the current pixel
-                        var idx = (y * rcanvasres[0] + x) * 4;
-                        
-                        // Get the grayscale value
-                        var gray = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-                        
-                        // Sobel operator kernels
-                        var gx = (
-                            -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
-                            -2 * data[y * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[y * rcanvasres[0] * 4 + (x + 1) * 4] +
-                            -data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
-                        );
-                
-                        var gy = (
-                            -data[(y - 1) * rcanvasres[0] * 4 + (x - 1) * 4] - 2 * data[(y - 1) * rcanvasres[0] * 4 + x * 4] - data[(y - 1) * rcanvasres[0] * 4 + (x + 1) * 4] +
-                            data[(y + 1) * rcanvasres[0] * 4 + (x - 1) * 4] + 2 * data[(y + 1) * rcanvasres[0] * 4 + x * 4] + data[(y + 1) * rcanvasres[0] * 4 + (x + 1) * 4]
-                        );
-                
-                        // Calculate magnitude and direction
-                        var magnitude = Math.sqrt(gx * gx + gy * gy);
-                        var direction = Math.atan2(gy, gx); // Direction in radians
-                
-                        // Store the magnitude and direction
-                        gradientMagnitude[idx / 4] = magnitude;
-                        gradientDirection[idx / 4] = direction;
-                    }
-                }
+                var thresholdPercent = 70; // Adjustable threshold percentage
+                var result = computeGradients(data, rcanvasres, thresholdPercent);
+
+                var gradientMagnitude = result.gradientMagnitude;
+                var gradientDirection = result.gradientDirection;
         
                 // Normalize the gradient magnitude for display
                 var maxMagnitude = Math.max(...gradientMagnitude);
