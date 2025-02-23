@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 91;
+const version = 93;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -194,9 +194,41 @@ function drawLineSegments(ctx, lineSegments) {
     ctx.lineWidth = 1; // Set the line width
 
     lineSegments.forEach(segment => {
+        const { start, end } = segment;
+
+        // Check if the segment is valid (within canvas bounds)
+        if (start.x < 0 || start.x >= ctx.canvas.width || start.y < 0 || start.y >= ctx.canvas.height ||
+            end.x < 0 || end.x >= ctx.canvas.width || end.y < 0 || end.y >= ctx.canvas.height) {
+            return; // Skip invalid segments
+        }
+
+        // Draw the line segment
         ctx.beginPath();
-        ctx.moveTo(segment.start.x, segment.start.y);
-        ctx.lineTo(segment.end.x, segment.end.y);
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+
+        // Calculate the midpoint
+        const midX = (start.x + end.x) / 2;
+        const midY = (start.y + end.y) / 2;
+
+        // Calculate the direction of the line segment
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        // Calculate the notch length (you can adjust this value)
+        const notchLength = 10;
+
+        // Calculate the perpendicular direction
+        const notchX = -dy / length * notchLength; // Perpendicular x-component
+        const notchY = dx / length * notchLength;  // Perpendicular y-component
+
+        // Draw the notch
+        ctx.strokeStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(midX + notchX, midY + notchY);
+        ctx.lineTo(midX - notchX, midY - notchY);
         ctx.stroke();
     });
 }
