@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 94;
+const version = 95;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -134,56 +134,50 @@ function visualizeEdgeComponents(gradientMagnitude, width, height, edgeThreshold
 
 function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, height) {
     const lineSegments = [];
-
-    // Create a map to store points for each label
     const labelPoints = {};
 
+    // Collect points for each label
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = y * width + x;
             const label = labels[index];
 
-            if (label > 0) { // Only consider labeled pixels
+            if (label > 0) {
                 if (!labelPoints[label]) {
                     labelPoints[label] = [];
                 }
-                labelPoints[label].push({ x: x, y: y, magnitude: gradientMagnitude[index], direction: gradientDirection[index] });
+                labelPoints[label].push({ x, y, magnitude: gradientMagnitude[index] });
             }
         }
     }
 
     // Fit a line segment for each label
-    for (const label in labelPoints) {
-        const points = labelPoints[label];
-
+    for (const points of Object.values(labelPoints)) {
         if (points.length < 2) continue; // Need at least two points to fit a line
 
-        // Calculate the weighted least squares fit
-        let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumWeights = 0;
+        // Calculate weighted averages for line fitting
+        const sum = points.reduce((acc, point) => {
+            acc.x += point.x * point.magnitude;
+            acc.y += point.y * point.magnitude;
+            acc.weight += point.magnitude;
+            return acc;
+        }, { x: 0, y: 0, weight: 0 });
 
-        points.forEach(point => {
-            const weight = point.magnitude; // Use magnitude as weight
-            sumX += point.x * weight;
-            sumY += point.y * weight;
-            sumXY += point.x * point.y * weight;
-            sumX2 += point.x * point.x * weight;
-            sumWeights += weight;
-        });
+        const avgX = sum.x / sum.weight;
+        const avgY = sum.y / sum.weight;
 
-        const slope = (sumWeights * sumXY - sumX * sumY) / (sumWeights * sumX2 - sumX * sumX);
-        const intercept = (sumY - slope * sumX) / sumWeights;
+        // Calculate direction based on the average position
+        const direction = Math.atan2(avgY, avgX);
+        const length = Math.sqrt(avgX * avgX + avgY * avgY);
 
-        // Calculate the start and end points of the line segment
-        const minX = Math.min(...points.map(p => p.x));
-        const maxX = Math.max(...points.map(p => p.x));
-        const startY = slope * minX + intercept;
-        const endY = slope * maxX + intercept;
+        // Normalize direction and create start and end points
+        const start = { x: avgX - length / 2 * Math.cos(direction), y: avgY - length / 2 * Math.sin(direction) };
+        const end = { x: avgX + length / 2 * Math.cos(direction), y: avgY + length / 2 * Math.sin(direction) };
 
-        lineSegments.push({
-            start: { x: minX, y: startY },
-            end: { x: maxX, y: endY },
-            direction: Math.atan(slope) // Store the direction of the line
-        });
+        // Only add segments that are long enough
+        if (length >= MIN_LENGTH_TO_DRAW) {
+            lineSegments.push({ start, end });
+        }
     }
 
     return lineSegments;
@@ -204,18 +198,11 @@ function drawLineSegments(ctx, lineSegments) {
         const dy = end.y - start.y;
         const length = Math.sqrt(dx * dx + dy * dy);
 
-        // Check if the segment is valid (within canvas bounds) and meets the length requirement
-        if (length < MIN_LENGTH_TO_DRAW || start.x < 0 || start.x >= ctx.canvas.width || start.y < 0 || start.y >= ctx.canvas.height ||
-            end.x < 0 || end.x >= ctx.canvas.width || end.y < 0 || end.y >= ctx.canvas.height) {
-            return; // Skip invalid segments or those shorter than MIN_LENGTH_TO_DRAW
-        }
+        // Skip segments that are too short
+        if (length < MIN_LENGTH_TO_DRAW) return;
 
         // Set the color based on the length of the line segment
-        if (length < MAX_LENGTH_FOR_GREEN) {
-            ctx.strokeStyle = 'green'; // Set color to green for segments less than MAX_LENGTH_FOR_GREEN
-        } else {
-            ctx.strokeStyle = 'orange'; // Set color to orange for segments 20px or longer
-        }
+        ctx.strokeStyle = (length < MAX_LENGTH_FOR_GREEN) ? 'green' : 'orange';
 
         // Draw the line segment
         ctx.beginPath();
@@ -223,26 +210,23 @@ function drawLineSegments(ctx, lineSegments) {
         ctx.lineTo(end.x, end.y);
         ctx.stroke();
 
-        // Calculate the midpoint
+        // Calculate the midpoint for the notch
         const midX = (start.x + end.x) / 2;
         const midY = (start.y + end.y) / 2;
 
-        // Calculate the notch length (you can adjust this value)
-        const notchLength = 10;
+        // Calculate the notch length (shorter than before)
+        const notchLength = 3; // Adjusted shorter notch length
 
-        // Calculate the perpendicular direction
+        // Calculate the perpendicular direction for the notch
         const notchX = -dy / length * notchLength; // Perpendicular x-component
         const notchY = dx / length * notchLength;  // Perpendicular y-component
 
-        // Draw the notch only if the line is at least MIN_LENGTH_TO_DRAW long
-        if (length >= MIN_LENGTH_TO_DRAW) {
-            // Draw the notch in red
-            ctx.strokeStyle = 'red'; // Set the color for the notches
-            ctx.beginPath();
-            ctx.moveTo(midX + notchX, midY + notchY);
-            ctx.lineTo(midX - notchX, midY - notchY);
-            ctx.stroke();
-        }
+        // Draw the notch in red
+        ctx.strokeStyle = 'red'; // Set the color for the notches
+        ctx.beginPath();
+        ctx.moveTo(midX + notchX, midY + notchY);
+        ctx.lineTo(midX - notchX, midY - notchY);
+        ctx.stroke();
     });
 }
 
