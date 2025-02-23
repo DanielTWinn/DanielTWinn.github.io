@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 98;
+const version = 99;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -15,17 +15,14 @@ function scaleVideoDimensions(width, height, maxPx = 400) {
 // Function to compute gradients and filter based on a percentage threshold
 function computeGradients(data, rcanvasres, thresholdPercent) {
     // Create arrays for gradient magnitudes and directions
-    var gradientMagnitude = new Uint8ClampedArray(data.length / 4);
-    var gradientDirection = new Float32Array(data.length / 4);
+    var gradientMagnitude = new Float32Array(data.length / 4); // Use Float32Array for magnitude
+    var gradientDirection = new Float32Array(data.length / 4); // Use Float32Array for direction
     
     // Convert to grayscale and compute gradients
     for (var y = 1; y < rcanvasres[1] - 1; y++) {
         for (var x = 1; x < rcanvasres[0] - 1; x++) {
             // Calculate the index for the current pixel
             var idx = (y * rcanvasres[0] + x) * 4;
-            
-            // Get the grayscale value
-            var gray = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
             
             // Sobel operator kernels
             var gx = (
@@ -55,20 +52,25 @@ function computeGradients(data, rcanvasres, thresholdPercent) {
     // Calculate the threshold value based on the percentage
     var thresholdValue = (thresholdPercent / 100) * maxMagnitude;
 
-    // Filter the results based on the threshold
-    var filteredMagnitudes = [];
-    var filteredDirections = [];
+    // Create new arrays to hold filtered results
+    var filteredMagnitude = new Float32Array(gradientMagnitude.length);
+    var filteredDirection = new Float32Array(gradientDirection.length);
     
+    // Filter the results based on the threshold
     for (var i = 0; i < gradientMagnitude.length; i++) {
         if (gradientMagnitude[i] > thresholdValue) {
-            filteredMagnitudes.push(gradientMagnitude[i]);
-            filteredDirections.push(gradientDirection[i]);
+            filteredMagnitude[i] = gradientMagnitude[i];
+            filteredDirection[i] = gradientDirection[i];
+        } else {
+            filteredMagnitude[i] = 0; // Set to 0 if below threshold
+            filteredDirection[i] = 0;  // Set to 0 if below threshold
         }
     }
 
+    // Return the filtered magnitudes and directions
     return {
-        magnitudes: filteredMagnitudes,
-        directions: filteredDirections
+        gradientMagnitude: filteredMagnitude,
+        gradientDirection: filteredDirection
     };
 }
 
