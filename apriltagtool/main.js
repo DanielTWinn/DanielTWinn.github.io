@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 93;
+const version = 94;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -189,17 +189,32 @@ function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, he
     return lineSegments;
 }
 
+// Adjustable thresholds
+const MIN_LENGTH_TO_DRAW = 8; // Minimum length to draw a line segment
+const MAX_LENGTH_FOR_GREEN = 20; // Maximum length for a line segment to be green
+
 function drawLineSegments(ctx, lineSegments) {
-    ctx.strokeStyle = 'orange'; // Set the color for the line segments
     ctx.lineWidth = 1; // Set the line width
 
     lineSegments.forEach(segment => {
         const { start, end } = segment;
 
-        // Check if the segment is valid (within canvas bounds)
-        if (start.x < 0 || start.x >= ctx.canvas.width || start.y < 0 || start.y >= ctx.canvas.height ||
+        // Calculate the length of the line segment
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        // Check if the segment is valid (within canvas bounds) and meets the length requirement
+        if (length < MIN_LENGTH_TO_DRAW || start.x < 0 || start.x >= ctx.canvas.width || start.y < 0 || start.y >= ctx.canvas.height ||
             end.x < 0 || end.x >= ctx.canvas.width || end.y < 0 || end.y >= ctx.canvas.height) {
-            return; // Skip invalid segments
+            return; // Skip invalid segments or those shorter than MIN_LENGTH_TO_DRAW
+        }
+
+        // Set the color based on the length of the line segment
+        if (length < MAX_LENGTH_FOR_GREEN) {
+            ctx.strokeStyle = 'green'; // Set color to green for segments less than MAX_LENGTH_FOR_GREEN
+        } else {
+            ctx.strokeStyle = 'orange'; // Set color to orange for segments 20px or longer
         }
 
         // Draw the line segment
@@ -212,11 +227,6 @@ function drawLineSegments(ctx, lineSegments) {
         const midX = (start.x + end.x) / 2;
         const midY = (start.y + end.y) / 2;
 
-        // Calculate the direction of the line segment
-        const dx = end.x - start.x;
-        const dy = end.y - start.y;
-        const length = Math.sqrt(dx * dx + dy * dy);
-
         // Calculate the notch length (you can adjust this value)
         const notchLength = 10;
 
@@ -224,12 +234,15 @@ function drawLineSegments(ctx, lineSegments) {
         const notchX = -dy / length * notchLength; // Perpendicular x-component
         const notchY = dx / length * notchLength;  // Perpendicular y-component
 
-        // Draw the notch
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        ctx.moveTo(midX + notchX, midY + notchY);
-        ctx.lineTo(midX - notchX, midY - notchY);
-        ctx.stroke();
+        // Draw the notch only if the line is at least MIN_LENGTH_TO_DRAW long
+        if (length >= MIN_LENGTH_TO_DRAW) {
+            // Draw the notch in red
+            ctx.strokeStyle = 'red'; // Set the color for the notches
+            ctx.beginPath();
+            ctx.moveTo(midX + notchX, midY + notchY);
+            ctx.lineTo(midX - notchX, midY - notchY);
+            ctx.stroke();
+        }
     });
 }
 
