@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 96;
+const version = 97;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -180,53 +180,17 @@ function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, he
         }
     }
 
-    return lineSegments;
+    return { lineSegments, labelPoints }; // Return both line segments and label points
 }
 
 // Adjustable thresholds
 const MIN_LENGTH_TO_DRAW = 8; // Minimum length to draw a line segment
 const MAX_LENGTH_FOR_GREEN = 20; // Maximum length for a line segment to be green
 
-function drawLineSegments(ctx, lineSegments) {
-    ctx.lineWidth = 1; // Set the line width
-
-    lineSegments.forEach(segment => {
-        const { start, end } = segment;
-
-        // Calculate the length of the line segment
-        const dx = end.x - start.x;
-        const dy = end.y - start.y;
-        const length = Math.sqrt(dx * dx + dy * dy);
-
-        // Skip segments that are too short
-        if (length < MIN_LENGTH_TO_DRAW) return;
-
-        // Set the color based on the length of the line segment
-        ctx.strokeStyle = (length < MAX_LENGTH_FOR_GREEN) ? 'green' : 'orange';
-
-        // Draw the line segment
-        ctx.beginPath();
-        ctx.moveTo(start.x, start.y);
-        ctx.lineTo(end.x, end.y);
-        ctx.stroke();
-
-        // Calculate the midpoint for the notch
-        const midX = (start.x + end.x) / 2;
-        const midY = (start.y + end.y) / 2;
-
-        // Calculate the notch length (shorter than before)
-        const notchLength = 3; // Adjusted shorter notch length
-
-        // Calculate the perpendicular direction for the notch
-        const notchX = -dy / length * notchLength; // Perpendicular x-component
-        const notchY = dx / length * notchLength;  // Perpendicular y-component
-
-        // Draw the notch in red
-        ctx.strokeStyle = 'red'; // Set the color for the notches
-        ctx.beginPath();
-        ctx.moveTo(midX + notchX, midY + notchY);
-        ctx.lineTo(midX - notchX, midY - notchY);
-        ctx.stroke();
+function drawPoints(ctx, points) {
+    ctx.fillStyle = 'blue'; // Color for points
+    points.forEach(point => {
+        ctx.fillRect(point.x, point.y, 2, 2); // Draw small squares for points
     });
 }
 
@@ -361,14 +325,16 @@ try {
                 // Put the output image data back to the canvas
                 cctx.putImageData(outputImageData, 0, 0);
 
-                // Fit line segments to the clustered pixels
-                const lineSegments = fitLineSegments(labels, gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1]);
+                // Fit line segments to the clustered pixels and get label points
+                const { lineSegments, labelPoints } = fitLineSegments(labels, gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1]);
 
                 // Clear the canvas before drawing the new frame
                 lctx.clearRect(0, 0, rcanvasres[0], rcanvasres[1]);
 
-                // Draw the fitted line segments
-                drawLineSegments(lctx, lineSegments);
+                // Draw the collected points for debugging
+                for (const points of Object.values(labelPoints)) {
+                    drawPoints(lctx, points);
+                }
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
