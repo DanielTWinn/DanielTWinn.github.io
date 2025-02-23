@@ -127,15 +127,90 @@ function visualizeEdgeComponents(gradientMagnitude, width, height, edgeThreshold
     return outputImageData;
 }
 
+function fitLineSegments(labels, gradientMagnitude, gradientDirection, width, height) {
+    const lineSegments = [];
+
+    // Create a map to store points for each label
+    const labelPoints = {};
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = y * width + x;
+            const label = labels[index];
+
+            if (label > 0) { // Only consider labeled pixels
+                if (!labelPoints[label]) {
+                    labelPoints[label] = [];
+                }
+                labelPoints[label].push({ x: x, y: y, magnitude: gradientMagnitude[index], direction: gradientDirection[index] });
+            }
+        }
+    }
+
+    // Fit a line segment for each label
+    for (const label in labelPoints) {
+        const points = labelPoints[label];
+
+        if (points.length < 2) continue; // Need at least two points to fit a line
+
+        // Calculate the weighted least squares fit
+        let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumWeights = 0;
+
+        points.forEach(point => {
+            const weight = point.magnitude; // Use magnitude as weight
+            sumX += point.x * weight;
+            sumY += point.y * weight;
+            sumXY += point.x * point.y * weight;
+            sumX2 += point.x * point.x * weight;
+            sumWeights += weight;
+        });
+
+        const slope = (sumWeights * sumXY - sumX * sumY) / (sumWeights * sumX2 - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / sumWeights;
+
+        // Calculate the start and end points of the line segment
+        const minX = Math.min(...points.map(p => p.x));
+        const maxX = Math.max(...points.map(p => p.x));
+        const startY = slope * minX + intercept;
+        const endY = slope * maxX + intercept;
+
+        lineSegments.push({
+            start: { x: minX, y: startY },
+            end: { x: maxX, y: endY },
+            direction: Math.atan(slope) // Store the direction of the line
+        });
+    }
+
+    return lineSegments;
+}
+
+function drawLineSegments(ctx, lineSegments) {
+    ctx.strokeStyle = 'orange'; // Set the color for the line segments
+    ctx.lineWidth = 2; // Set the line width
+
+    lineSegments.forEach(segment => {
+        ctx.beginPath();
+        ctx.moveTo(segment.start.x, segment.start.y);
+        ctx.lineTo(segment.end.x, segment.end.y);
+        ctx.stroke();
+    });
+}
+
 try {
         const cameraVideoStream = document.getElementById('camera-stream');
         var gcanvas = document.getElementById('gcanvas');
         var gctx = gcanvas.getContext('2d');
         var ccanvas = document.getElementById('ccanvas');
         var cctx = ccanvas.getContext('2d');
+        var lcanvas = document.getElementById('ccanvas');
+        var lctx = ccanvas.getContext('2d');
 
         gcanvas.style.width ='100%';
         gcanvas.style.height='100%';
+        ccanvas.style.width ='100%';
+        ccanvas.style.height='100%';
+        lcanvas.style.width ='100%';
+        lcanvas.style.height='100%';
         var rcanvasres = [16, 9];
         var canvasres = "???";
 
@@ -157,6 +232,8 @@ try {
                         gcanvas.height = restemp[1];
                         ccanvas.width  = restemp[0];
                         ccanvas.height = restemp[1];
+                        lcanvas.width  = restemp[0];
+                        lcanvas.height = restemp[1];
                         document.getElementById('canstats').innerHTML = "FPS: ? | Full Resolution: "+canvasres;
                 })
         }
@@ -170,6 +247,8 @@ try {
                 gcanvas.height = rcanvasres[1];
                 ccanvas.width  = rcanvasres[0];
                 ccanvas.height = rcanvasres[1];
+                lcanvas.width  = rcanvasres[0];
+                lcanvas.height = rcanvasres[1];
         });
 
         var count = 0;
@@ -247,6 +326,15 @@ try {
 
                 // Put the output image data back to the canvas
                 cctx.putImageData(outputImageData, 0, 0);
+
+                // Fit line segments to the clustered pixels
+                const lineSegments = fitLineSegments(labels, gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1]);
+
+                // Clear the canvas before drawing the new frame
+                cctx.clearRect(0, 0, rcanvasres[0], rcanvasres[1]);
+
+                // Draw the fitted line segments
+                drawLineSegments(lctx, lineSegments);
 
                 var elapsedTime = Date.now() - startTime;
                 if (elapsedTime >= 1000) {
