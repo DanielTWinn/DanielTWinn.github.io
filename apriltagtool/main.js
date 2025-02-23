@@ -50,23 +50,65 @@ function clusterPixels(gradientMagnitude, gradientDirection, width, height, magn
     return labels;
 }
 
-function visualizeEdges(gradientMagnitude, width, height, edgeThreshold) {
+function visualizeEdgeComponents(gradientMagnitude, width, height, edgeThreshold) {
     const outputImageData = new ImageData(width, height);
-    
+    const labels = new Array(gradientMagnitude.length).fill(-1);
+    let currentLabel = 0;
+
     // Initialize the output image data to transparent
     for (let i = 0; i < outputImageData.data.length; i += 4) {
         outputImageData.data[i + 3] = 0; // Set alpha to 0 (transparent)
     }
 
+    // First pass: Label the edges
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
             const index = y * width + x;
-            if (gradientMagnitude[index] > edgeThreshold) {
-                // Set the color for the edge
-                outputImageData.data[index * 4] = 255;     // Red
-                outputImageData.data[index * 4 + 1] = 0;   // Green
-                outputImageData.data[index * 4 + 2] = 0;   // Blue
-                outputImageData.data[index * 4 + 3] = 255; // Alpha (fully opaque)
+            if (gradientMagnitude[index] > edgeThreshold && labels[index] === -1) {
+                // Start a new component
+                currentLabel++;
+                const queue = [[x, y]];
+
+                while (queue.length > 0) {
+                    const [cx, cy] = queue.pop();
+                    const currentIndex = cy * width + cx;
+
+                    // Label the current pixel
+                    labels[currentIndex] = currentLabel;
+
+                    // Check neighboring pixels
+                    for (let ny = cy - 1; ny <= cy + 1; ny++) {
+                        for (let nx = cx - 1; nx <= cx + 1; nx++) {
+                            if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                                const neighborIndex = ny * width + nx;
+                                if (gradientMagnitude[neighborIndex] > edgeThreshold && labels[neighborIndex] === -1) {
+                                    labels[neighborIndex] = currentLabel;
+                                    queue.push([nx, ny]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Second pass: Assign colors based on labels
+    const colors = [];
+    for (let i = 0; i <= currentLabel; i++) {
+        colors.push([Math.random() * 255, Math.random() * 255, Math.random() * 255, 255]); // Random colors
+    }
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const index = y * width + x;
+            const label = labels[index];
+            if (label > 0) { // Only color labeled edges
+                const color = colors[label];
+                outputImageData.data[index * 4] = color[0];     // Red
+                outputImageData.data[index * 4 + 1] = color[1]; // Green
+                outputImageData.data[index * 4 + 2] = color[2]; // Blue
+                outputImageData.data[index * 4 + 3] = color[3]; // Alpha
             }
         }
     }
@@ -189,8 +231,8 @@ try {
                 const labels = clusterPixels(gradientMagnitude, gradientDirection, rcanvasres[0], rcanvasres[1], magnitudeThreshold, directionThreshold);
 
                 // Step 3: Visualize edges based on the gradient magnitudes
-                const edgeThreshold = 80; // Set your threshold for edge detection
-                const outputImageData = visualizeEdges(gradientMagnitude, rcanvasres[0], rcanvasres[1], edgeThreshold);
+                const edgeThreshold = 50; // Set your threshold for edge detection
+                const outputImageData = visualizeEdgeComponents(gradientMagnitude, rcanvasres[0], rcanvasres[1], edgeThreshold);
 
                 // Put the output image data back to the canvas
                 cctx.putImageData(outputImageData, 0, 0);
