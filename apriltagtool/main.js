@@ -1,5 +1,5 @@
 console.log("© 2025 Daniel Winn");
-const version = 101;
+const version = 102;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -306,7 +306,6 @@ try {
         slider.addEventListener('input', function() {
             var thresholdPercent = slider.value;
             thresholdValueLabel.textContent = thresholdPercent; // Update label
-            updateCanvas(thresholdPercent); // Update the canvas
         });
 
         document.getElementById('turn').addEventListener('click', function() {
