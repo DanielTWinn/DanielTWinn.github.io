@@ -1,4 +1,4 @@
-console.log("© 2025 Daniel Winn");
+console.log("© 2026 Daniel Winn");
 const version = 102;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
