@@ -1,0 +1,137 @@
+body {
+    font-family: monospace;
+    color: white;
+    text-align: center;
+    background-color: #2b2a33;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.limit {
+    position: relative;
+    text-align: center;
+    width: 400px;
+    max-width: 99%;
+    min-height: 40%;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+    border-left: 2px dashed #1f1e25;
+    border-right: 2px dashed #1f1e25;
+}
+
+.top {
+    background-color: #1f1e25;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+h5 {
+    position: fixed;
+    bottom: 0;
+}
+
+h5, a {
+    background-color: #1f1e25;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    text-decoration: none;
+    color: #2fd4d4;
+    display: block;
+}
+
+a {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 0;
+    padding: 8px 0 0 8px;
+    font-weight: 900;
+}
+
+h3 {
+    color: #afafaf;
+    font-style: italic;
+    margin: 0;
+    padding: 2px;
+    font-size: 12px;
+}
+
+canvas {
+    border-top: 4px dashed #1f1e25;
+}
+
+h4 {
+    font-style: italic;
+    color: rgb(225, 225, 225);
+}
+
+button {
+    background-color: #1f1e25;
+    color: white;
+    text-align: center;
+    font-weight: 900;
+    border: none;
+    padding: 5px;
+    margin: none;
+    border: #3e3d44 solid 1px;
+    cursor: pointer;
+}
+
+#version {
+    color: orangered;
+    font-style: italic;
+    font-weight: 900;
+}
+
+textarea {
+    background-color: #1f1e25;
+    border: #2b2a33 dashed 2px;
+    color: white;
+    font-family: monospace;
+}
+
+canvas {
+    border: #1f1e25 dashed 2px;
+}
+
+.bm {
+    margin-bottom: 60px;
+}
+
+.settings {
+    margin: auto;
+    width: 600px;
+}
+.setting {
+    display: inline-block;
+    width: 49%;
+}
+
+select {
+    background-color: #1f1e25;
+    border: #3e3d44 solid 1px;
+    color: white;
+    padding: 2px;
+}
+
+#downloadPng {
+    background-color: #1f88c0;
+}
+
+#downloadJpg {
+    background-color: #1fc052;
+}
+
+#printCanvas {
+    background-color: #595959;
+}

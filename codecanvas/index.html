@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Code Canvas</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Code Canvas is a simple way to turn your code into a good looking image!">
+        <meta name="keywords" content="Code, Canvas, CodeCanvas, Print, Daniel, Winn, Tool, Image, Converter">
+        <meta name="author" content="Daniel Winn">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="codecanvas/main.css">
+        <script src="https://cdn.jsdelivr.net/npm/prettier@2.8.0/standalone.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prettier@2.8.0/parser-babel.js"></script>
+    </head>
+    <body>
+        <div class="top">
+            <h1>Code Canvas</h1>
+            <h3>&#169; 2026 Daniel Winn | MIT LICENSE</h3>
+        </div>
+        <h4>Paste your code here:</h4>
+        <textarea id="code" rows="18" cols="80" wrap="off" autocapitalize="none" spellcheck="false" placeholder="[ Paste code here ]"></textarea>
+        <br>
+        <br>
+        <button id="format">Make Code <span style="color:rgb(239, 137, 245)">Pretty</span></button>
+        <br>
+        <div class="settings">
+            <div class="setting" style="float: left; border-right: #2b2a33 dashed 2px;">
+                <h4>Font Size: <span id="fst">12</span>px</h4>
+                <input id="fontsize" type="range" min="10" max="60" value="12" oninput="updatefs()">
+            </div>
+            <div class="setting" style="float: right;">
+                <h4>Theme:</h4>
+                <select id="theme" name="theme">
+                    <option value="basic">Basic</option>
+                    <option style="background-color: #000000; font-weight: 100; font-family: monospace; color: rgb(255, 255, 255);" value="dark">Dark</option>
+                    <option style="background-color: #e5e5e5; font-weight: 100; font-family: monospace; color: black;" value="codeorg">Code.org</option>
+                    <option style="background-color: #ffffff; font-weight: 100; font-family: Monaco; color: black;" value="codehs">CodeHS</option>
+                    <option style="background-color: white; font-weight: 100; font-family: monospace; color: black;" value="apcsp">AP CSP</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <button id="create">Transfer to Canvas</button>
+        <br>
+        <br>
+        <canvas id="canvas" width="300px" height="200px"></canvas>
+        <br>
+        <br>
+        <button id="downloadPng">Download as PNG</button>
+        <button id="downloadJpg">Download as JPG</button>
+        <button id="printCanvas">Print Canvas</button>
+        <br class="bm">
+        <h5>
+            <a href="https://github.com/DanielTWinn/DanielTWinn.github.io/blob/main/LICENSE">&#169; 2026 Daniel Winn | MIT License | V <span id="version">?????</span></a>
+        </h5>
+        <script src="codecanvas/main.js"></script>
+    </body>
+</html>
