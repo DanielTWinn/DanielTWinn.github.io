@@ -1,5 +1,5 @@
 console.log("© 2026 Daniel Winn");
-const version = 4;
+const version = 5;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
@@ -38,7 +38,7 @@ document.getElementById('create').addEventListener('click', function() {
     const totalHeight = lines.length * (parseInt(fontSize) + 10); // 10 for spacing
 
     // Set the canvas size
-    canvas.width = maxWidth + 12; // Add padding
+    canvas.width = maxWidth + 8; // Add padding
     canvas.height = totalHeight + 0; // Add padding
 
     // Clear the canvas before drawing new text
@@ -73,7 +73,7 @@ document.getElementById('create').addEventListener('click', function() {
 
     // Draw each line on the canvas
     lines.forEach((line, index) => {
-        context.fillText(line, 10, parseInt(fontSize) + (index * (parseInt(fontSize) + 10))); // Adjust Y position for each line
+        context.fillText(line, 4, parseInt(fontSize) + (index * (parseInt(fontSize) + 10))); // Adjust Y position for each line
     });
 });
 
