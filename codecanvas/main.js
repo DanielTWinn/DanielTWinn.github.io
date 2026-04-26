@@ -1,5 +1,5 @@
 console.log("© 2026 Daniel Winn");
-const version = 3;
+const version = 4;
 console.log("V"+version);
 document.getElementById("version").innerHTML = version;
 
